@@ -1,11 +1,11 @@
 =head1 NAME
 
-Mojolicious::Guides::CodingGuidelines – Programmier-Richtlinien
+Mojolicious::Guides::CodingGuidelines – Programmierrichtlinien
 
 =head1 ÜBERSICHT
 
-Dieses Dokument beschreibt die Programmier-Richtlinien, die Grundlagen für
-die Entwicklung von L<Mojo> und L<Mojolicious> sind.
+Dieses Dokument beschreibt die grundlegenden Programmierrichtlinien für
+die Entwicklung von L<Mojo> und L<Mojolicious>.
 
 Bitte reiche nur Patches ein wenn du ihnen zustimmst.
 
@@ -13,7 +13,7 @@ Bitte reiche nur Patches ein wenn du ihnen zustimmst.
 
 L<Mojo> ist eine Laufzeitumgebung für Echtzeit Perl Web-Frameworks.
 Es bietet alle grundlegenden Werkzeuge und Helfer um einfache
-Web Applikationen oder höheren Frameworks, wie zum Beispiel L<Mojolicious>
+Web Applikationen oder höhere Frameworks, wie zum Beispiel L<Mojolicious>
 zu schreiben.
 
 Alle Komponenten sollten in anderen Projekten wiederverwendbar und in einer
@@ -32,9 +32,9 @@ L<Mojolicious> Distribution als Beispielanwendung zu betrachten.
 
 =over 2
 
-Webentwicklung sollte einfach und spaßig sein. Für dieses Ziel optimieren wir.
+Webentwicklung sollte einfach und spaßig sein. Auf dieses Ziel hin optimieren wir.
 
-Das Internet ist im ständigen Wandel, um relevant zu bleiben
+Das Internet ist im ständigen Wandel. Um relevant zu bleiben
 müssen wir auch in Bewegung bleiben.
 
 Keep it simple! Keine Schnickschnack wenn nicht unbedingt notwendig.
@@ -77,7 +77,7 @@ Keine Seitenlangen Erzählungen.
 (Faustregel: Ein Beispiel für jeden oder jeden zweiten Satz)
 
 Der Code im Master-Repository sollte immer stabil gehalten werden.
-Für die richtige Entwicklung solltest du Branches nutzen.
+Für die richtige Entwicklung sollten Branches benutzt werden.
 
 Zeilen sollten nicht länger als 78 Zeichen und um 2 Leerzeichen eingerückt sein.
 
