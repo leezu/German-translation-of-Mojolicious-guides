@@ -84,8 +84,8 @@ Für die richtige Entwicklung sollten Branches benutzt werden.
 Zeilen sollten nicht länger als 78 Zeichen und um 2 Leerzeichen eingerückt
 sein.
 
-Code sollte durch L<Perl::Tidy> mit dem enthaltenen C<.perltidyrc>
-ausgeführt werden.
+Der Code sollte mit L<Perl::Tidy> und den im C<.perltidyrc> enthaltenen
+Regeln getestet werden.
 
 Kein Spaghetti-Code.
 
