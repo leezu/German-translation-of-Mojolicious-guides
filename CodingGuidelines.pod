@@ -7,21 +7,21 @@ Mojolicious::Guides::CodingGuidelines – Programmierrichtlinien
 Dieses Dokument beschreibt die grundlegenden Programmierrichtlinien für
 die Entwicklung von L<Mojo> und L<Mojolicious>.
 
-Bitte reiche nur Patches ein wenn du ihnen zustimmst.
+Bitte reiche nur Patches ein, wenn du ihnen zustimmst.
 
 =head1 LEITBILD
 
 L<Mojo> ist eine Laufzeitumgebung für Echtzeit Perl Web-Frameworks.
-Es bietet alle grundlegenden Werkzeuge und Helfer um einfache
+Es bietet alle grundlegenden Werkzeuge und Helfer, um einfache
 Web Applikationen oder höhere Frameworks, wie zum Beispiel L<Mojolicious>
 zu schreiben.
 
 Alle Komponenten sollten in anderen Projekten wiederverwendbar und in einer
 Unix-artigen Weise nur lose gekoppelt sein.
 
-Insbesondere für Perl-Neulinge sollte es so einfach wie möglich sein
+Insbesondere für Perl-Neulinge sollte es so einfach wie möglich sein,
 Mojolicious zu installieren und sich einzuarbeiten. Das Schreiben von
-Webapplikationen ist einer der spaßigsten Wege um eine neue
+Webapplikationen ist einer der spaßigsten Wege, um eine neue
 Programmiersprache zu lernen!
 
 Für die Entwickler anderer Web Frameworks sollte es möglich sein die
@@ -32,24 +32,24 @@ L<Mojolicious> Distribution als Beispielanwendung zu betrachten.
 
 =over 2
 
-Webentwicklung sollte einfach und spaßig sein. Auf dieses Ziel hin optimieren wir.
+Webentwicklung sollte einfach und spaßig sein. Daraufhin arbeiten wir.
 
 Das Internet ist im ständigen Wandel. Um relevant zu bleiben
 müssen wir auch in Bewegung bleiben.
 
-Keep it simple! Keine Schnickschnack wenn nicht unbedingt notwendig.
+Halte es einfach! Keinen Schnickschnack, wenn nicht unbedingt notwendig.
 
 Der Installationsprozess sollte so schnell und schmerzlos wie möglich sein.
 (Faustregel: Weniger als eine Minute mit durchschnittlicher Hardware)
 
 Code sollte mit einem Perl6 Port im Sinn geschrieben werden.
 
-Keine Restrukturierung solange nicht eine sehr wichtige Funktion diese auf
-jeden Fall erfordert.
+Keine Restrukturierung, solange diese nicht aufgrund eines sehr wichtigen
+Features erforderlich ist.
 
 Ohne Test und Dokumentation ist es kein Feature.
 
-Ein Feature wird nur gebraucht wenn der Großteil des Benutzerkreises
+Ein Feature wird nur gebraucht, wenn der Großteil des Benutzerkreises
 davon profitiert.
 
 Features dürfen nicht verändert werden, solange sie nicht älter als eine
@@ -58,36 +58,40 @@ Hauptversion oder 3 Monate sind.
 Das Herabwürdigen eines Features sollte um jeden Preis verhindert werden.
 
 Eine Hauptversion kann unabhängig von den Versionsnummern sein und wird von
-einem einzigartigen Codenamen bestehend aus einem Unicode Zeichen signalisiert.
+einem einzigartigen Codenamen, bestehend aus einem Unicode Zeichen signalisiert.
 
-Neue Features können als experimentell bezeichnet werden um von den
+Neue Features können als experimentell bezeichnet werden, um von den
 Herabwürdigungsrichtlinien ausgeschlossen zu werden.
 
 Füge neue Systemanforderungen nur hinzu, wenn dies unbedingt notwendig
 sind und mache sie wenn möglich optional.
 
-Domänenspezifische Sprachen sollten zugunsten von Perl'ischen Lösungen vermieden werden.
+Domänenspezifische Sprachen sollten zugunsten von Perl'ischen Lösungen
+vermieden werden.
 
 Keine POD im Programmtext.
 
-Die Dokumentation gehört in die Guides. Das POD Modul ist nur eine API-Referenz.
+Die Dokumentation gehört in die Guides. Das POD Modul ist nur eine
+API-Referenz.
 
-Der Hauptfokus bei der Dokumentation liegt bei Beispielen.
+Der Hauptfokus der Dokumentation liegt auf Beispielen.
 Keine Seitenlangen Erzählungen.
 (Faustregel: Ein Beispiel für jeden oder jeden zweiten Satz)
 
 Der Code im Master-Repository sollte immer stabil gehalten werden.
 Für die richtige Entwicklung sollten Branches benutzt werden.
 
-Zeilen sollten nicht länger als 78 Zeichen und um 2 Leerzeichen eingerückt sein.
+Zeilen sollten nicht länger als 78 Zeichen und um 2 Leerzeichen eingerückt
+sein.
 
-Code sollte durch L<Perl::Tidy> mit dem enthaltenen C<.perltidyrc> ausgeführt werden.
+Code sollte durch L<Perl::Tidy> mit dem enthaltenen C<.perltidyrc>
+ausgeführt werden.
 
 Kein Spaghetti-Code.
 
 Code sollte in Blöcken mit Kommentaren geordnet sein.
 
-Kommentare sollten lustig sein.
+Kommentare sollten, wenn möglich, lustig sein.
 
 In jeder Datei sollte zumindest ein Zitat aus C<The Simpsons> oder
 C<Futurama> enthalten sein.
@@ -102,7 +106,10 @@ Peace!
 
 =head1 MEHR
 
-Du kannst mit den L<Mojolicious::Guides> weitermachen oder einen Blick auf die Mojolicious Wiki L<http://github.com/kraih/mojo/wiki> werfen. Dort findest du eine Menge weitere Dokumentation und Beispiele von vielen verschiedenen Leuten.
+Du kannst mit den L<Mojolicious::Guides> weitermachen oder einen Blick auf
+die Mojolicious Wiki L<http://github.com/kraih/mojo/wiki> werfen.
+Dort findest du eine Menge weitere Dokumentation und Beispiele von
+vielen verschiedenen Leuten.
 
 =cut
 
