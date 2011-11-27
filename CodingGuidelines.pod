@@ -85,7 +85,7 @@ Zeilen sollten nicht länger als 78 Zeichen und um 2 Leerzeichen eingerückt
 sein.
 
 Der Code sollte mit L<Perl::Tidy> und den im C<.perltidyrc> enthaltenen
-Regeln getestet werden.
+Regeln formatiert werden.
 
 Kein Spaghetti-Code.
 
