@@ -206,7 +206,7 @@ Standardmäßig C<262144>.
 
 =head2 C<MOJO_MAX_LINE_SIZE>
 
-Maximale Zeilengröße von Startzeilen und Header von HTTP-Nachrichten in Bytes.
+Maximale Zeilengröße von Startzeilen und Headern der HTTP-Nachrichten in Bytes.
 Standardmäßig C<10240>.
 
   MOJO_MAX_LINE_SIZE=2048
