@@ -147,7 +147,7 @@ Merke: L<IO::Socket::SSL> muss für den TLS-Support installiert sein.
 
 =head2 C<MOJO_CERT_FILE>
 
-Pfad zum TLS-Zertifikat. Sollte immer einen Pfad wie C</etc/tls/client.crt>
+Pfad zum TLS-Zertifikat. Sollte immer ein Pfad wie C</etc/tls/client.crt>
 sein.
 Merke: L<IO::Socket::SSL> muss für den TLS-Support installiert sein.
 
@@ -170,7 +170,7 @@ Testen.
 
 =head2 C<MOJO_HOME>
 
-Home-Directory der L<Mojolicious> Anwendung. Sollte immer einen Pfad
+Home-Directory der L<Mojolicious> Anwendung. Sollte immer ein Pfad
 wie C</home/sri/myapp> sein.
 
   MOJO_HOME=/home/sri/myapp
@@ -183,7 +183,7 @@ Alternative L<Mojo::IOWatcher> Implementation zum Ausprobieren.
 
 =head2 C<MOJO_KEY_FILE>
 
-Pfad zum TLS-Key. Sollte immer einen Pfad wie C</etc/tls/client.key>
+Pfad zum TLS-Key. Sollte immer ein Pfad wie C</etc/tls/client.key>
 sein.
 Merke: L<IO::Socket::SSL> muss für den TLS-Support installiert sein.
 
