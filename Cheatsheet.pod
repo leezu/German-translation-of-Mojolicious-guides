@@ -45,7 +45,7 @@ Controller, an den weitergeleitet wird.
 
   $self->render(data => 'raw bytes');
 
-Ändere Raw-Bytes in eine Antwort um.
+Ändere Raw-Bytes in eine Antwort.
 
 =head2 C<extends>
 
@@ -125,7 +125,7 @@ Zu renderndes Template.
 
 Ändert Zeichen in eine Antwort.
 
-=head1 ENVIRONMENT VARIABLES
+=head1 UMGEBUNGSVARIABELN
 
 Viele Teile von L<Mojolicious> können mit Umgebungsvariabeln justiert werden.
 Debug-Umgebungsvariabeln sind ausgeschlossen, da sie nur für den
@@ -133,21 +133,21 @@ Entwicklungsgebrauch sind.
 
 =head2 C<MOJO_APP>
 
-Entscheidet welche L<Mojolicious> oder L<Mojo> Anwendung genutzt wird, sollte
+Entscheidet welche L<Mojolicious> oder L<Mojo> Anwendung genutzt wird. Sollte
 immer ein Klassennamen wie C<MyApp> sein. Standardmäßig L<Mojo::HelloWorld>.
 
   MOJO_APP=MyApp
 
 =head2 C<MOJO_CA_FILE>
 
-Pfad zur TLS CA Datei, sollte immer ein Pfad wie C</etc/tls/cacerts.pem> sein.
+Pfad zur TLS CA Datei. Sollte immer ein Pfad wie C</etc/tls/cacerts.pem> sein.
 Merke: L<IO::Socket::SSL> muss für den TLS-Support installiert sein.
 
   MOJO_CA_FILE=/etc/tls/cacerts.pem
 
 =head2 C<MOJO_CERT_FILE>
 
-Pfad zum TLS-Zertifikat, sollte immer einen Pfad wie C</etc/tls/client.crt>
+Pfad zum TLS-Zertifikat. Sollte immer einen Pfad wie C</etc/tls/client.crt>
 sein.
 Merke: L<IO::Socket::SSL> muss für den TLS-Support installiert sein.
 
@@ -156,21 +156,21 @@ Merke: L<IO::Socket::SSL> muss für den TLS-Support installiert sein.
 =head2 C<MOJO_CHUNK_SIZE>
 
 Blockgröße für I/O Operationen in Bytes. Ein größerer Block beschleunigt I/O
-I/O Operationen, verbraucht aber auch mehr Speicher. Standardmäßig C<131072>.
+Operationen, verbraucht aber auch mehr Speicher. Standardmäßig C<131072>.
 
   MOJO_CHUNK_SIZE=1024
 
 =head2 C<MOJO_CONFIG>
 
-Konfigurationsdatei, dass von L<Mojolicious::Plugin::Config> und
-L<Mojolicious::Plugin::JSONConfig> genutzt werden soll. Ziemlich nützlich zum
+Konfigurationsdatei, die von L<Mojolicious::Plugin::Config> und
+L<Mojolicious::Plugin::JSONConfig> genutzt werden soll. Ziemlich praktisch zum
 Testen.
 
    MOJO_CONFIG=myapp.conf
 
 =head2 C<MOJO_HOME>
 
-Home-Directory der L<Mojolicious> Anwendung, sollte immer einen Pfad
+Home-Directory der L<Mojolicious> Anwendung. Sollte immer einen Pfad
 wie C</home/sri/myapp> sein.
 
   MOJO_HOME=/home/sri/myapp
@@ -183,7 +183,7 @@ Alternative L<Mojo::IOWatcher> Implementation zum Ausprobieren.
 
 =head2 C<MOJO_KEY_FILE>
 
-Pfad zum TLS-Key, sollte immer einen Pfad wie C</etc/tls/client.key>
+Pfad zum TLS-Key. Sollte immer einen Pfad wie C</etc/tls/client.key>
 sein.
 Merke: L<IO::Socket::SSL> muss für den TLS-Support installiert sein.
 
@@ -191,7 +191,7 @@ Merke: L<IO::Socket::SSL> muss für den TLS-Support installiert sein.
 
 =head2 C<MOJO_LOG_LEVEL>
 
-Log-Level der L<Mojolicious> Anwendung, sollte ein gültiges Log-Level wie
+Log-Level der L<Mojolicious> Anwendung. Sollte ein gültiges Log-Level wie
 C<debug> or C<error> sein.
 
   MOJO_LOG_LEVEL=debug
@@ -206,14 +206,14 @@ Standardmäßig C<262144>.
 
 =head2 C<MOJO_MAX_LINE_SIZE>
 
-Maximale Zeilengröße von HTTP-Nachrichten Startzeilen und Headern in Bytes.
+Maximale Zeilengröße von Startzeilen und Header von HTTP-Nachrichten in Bytes.
 Standardmäßig C<10240>.
 
   MOJO_MAX_LINE_SIZE=2048
 
 =head2 C<MOJO_MAX_MEMORY_SIZE>
 
-Maximale Größe für HTTP-Content, dass im Speicher gehalten wird.
+Maximale Größe für HTTP-Content, der im Speicher gehalten wird.
 Alles größere wird in temporäre Dateien geschrieben. Standardmäßg C<262144>.
 
   MOJO_MAX_MEMORY_SIZE=2048
@@ -239,7 +239,7 @@ Maximale Größe der WebSocket Mitteilung in Bytes. Standardmäßig C<262144>.44
 
 =head2 C<MOJO_MODE>
 
-Betriebsart der L<Mojolicious> Anwendung, sollte einen gültigen Modes wie
+Betriebsart der L<Mojolicious> Anwendung. Sollte ein gültiger Modus wie
 C<development> oder C<production> sein.
 
   MOJO_MODE=development
@@ -276,7 +276,7 @@ Merke: L<IO::Socket::SSL> muss für den TLS-Support installiert sein.
 =head2 C<MOJO_PROXY>
 
 Aktiviert die automatische HTTP und HTTPS Proxy Erkennung in L<Mojo::UserAgent>.
-Dies ist aus Sicherheitsgründen standardmäßig deaktiviert.
+Diese ist aus Sicherheitsgründen standardmäßig deaktiviert.
 
   MOJO_PROXY=1
 
@@ -291,8 +291,7 @@ C<X-Forwarded-Host> und C<X-Forwarded-HTTPS> Headers abzuholen.
 =head2 C<MOJO_STATIC_CLASS>
 
 Klasse, die der L<Mojolicious> Static-File-Dispatcher benutzen sollte, um
-C<DATA> Templates zu finden.
-Standardmäßg C<main>.
+C<DATA> Templates zu finden. Standardmäßg C<main>.
 
   MOJO_STATIC_CLASS=MyApp
 
@@ -307,8 +306,7 @@ Standardmäßg C<main>.
 =head2 C<MOJO_TMPDIR>
 
 Verzeichnis für temponäre Dateien, wie zum Beispiel größere Uploads.
-Standardmäßig wird ein zufälliges, plattformabhängiges Verzeichnis
-gewählt.
+Standardmäßig wird plattformabhängig ein zufälliges Verzeichnis gewählt.
 
   MOJO_TMPDIR=/tmp/mojo
 
