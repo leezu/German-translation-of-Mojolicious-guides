@@ -99,13 +99,13 @@ Namensbereich, an den weitergeleitet wird.
 
   my $result = $self->render(partial => 1);
 
-Gib das Renderingergebnis aus, anstatt es in eine Antwort umzuwandlen.
+Gib das Renderingergebnis aus, anstatt es in eine Antwort umzuwandeln.
 
 =head2 C<path>
 
   $r->route('/welcome')->to(path => '/test', app => MyApp->new);
 
-Basispfad zum Weiterleiten an eingebettete Anwendungen.
+Basispfad, der für die Weiterleitung an eingebettete Anwendungen genutzt wird.
 
 =head2 C<status>
 
@@ -214,7 +214,7 @@ Standardmäßig C<10240>.
 =head2 C<MOJO_MAX_MEMORY_SIZE>
 
 Maximale Größe für HTTP-Content in Bytes, der im Speicher gehalten wird.
-Alles größere wird in temporäre Dateien geschrieben. Standardmäßg C<262144>.
+Alles größere wird in temporäre Dateien geschrieben. Standardmäßig C<262144>.
 
   MOJO_MAX_MEMORY_SIZE=2048
 
@@ -291,7 +291,7 @@ C<X-Forwarded-Host> und C<X-Forwarded-HTTPS> Headers abzuholen.
 =head2 C<MOJO_STATIC_CLASS>
 
 Klasse, die der L<Mojolicious> Static-File-Dispatcher benutzen sollte, um
-C<DATA> Templates zu finden. Standardmäßg C<main>.
+C<DATA> Templates zu finden. Standardmäßig C<main>.
 
   MOJO_STATIC_CLASS=MyApp
 
@@ -299,7 +299,7 @@ C<DATA> Templates zu finden. Standardmäßg C<main>.
 
 Klasse, die der L<Mojolicious> Renderer benutzen sollte um C<DATA> Templates
 zu finden.
-Standardmäßg C<main>.
+Standardmäßig C<main>.
 
   MOJO_TEMPLATE_CLASS=MyApp
 
