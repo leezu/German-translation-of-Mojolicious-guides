@@ -383,7 +383,7 @@ werden.
 Merke aber, dass alles in C<HMAC-MD5> signierten Cookies gespeichert wird,
 sodass normalerweise ein 4096 Byte Limit, je nach Browser, existiert.
 
-=head2 Endgültiger Prototype
+=head2 Endgültiger Prototyp
 
 Ein endgültiger C<myapp.pl> Prototyp, der all Daten aus den Einheits-Tests von
 oben weiterreicht, könnte so aussehen.
