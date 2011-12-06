@@ -6,7 +6,7 @@ Mojolicious::Guides::Growing - Growing
 
 Dieses Dokument beschreibt den Prozess mit einem L<Mojolicious::Lite>
 Prototypen von Null anzufangen und zu einer gut strukturierten L<Mojolicious>
-Anwendung fortzuschreiten.
+Anwendung auszubauen.
 
 =head1 Konzept
 
@@ -49,7 +49,7 @@ Obwohl es an für sich mit vielen Protokollen genutzt werden könnte, wird es
 heute hauptsächlich mit C<HTTP> genutzt.
 In REST-Termini fragt dein Browser, wenn du einen URL wie
 C<http://mojolicio.us/foo> öffnest, im Grunde den Web-Server nach der HTML
-C<representation> der C<http://mojolicio.us/foo> C<resource>.
+C<representation> der C<resource> C<http://mojolicio.us/foo>.
 
   .--------.                                .--------.
   |        | -> http://mojolicio.us/foo  -> |        |
@@ -61,7 +61,7 @@ Die hier zugrunde liegende Idee ist, dass alle Ressourcen eindeutig
 über URLs adressierbar sind und jede Ressource verschieden Darstellungen,
 wie zum Beispiel HTML, RSS oder JSON haben kann.
 Der Betrieb der Benutzeroberfläche ist getrennt von dem Betrieb der
-Dateispeicherung und der gesamte Sitzungsstatus wird Clientseitig gehalten.
+Dateispeicherung und der gesamte Session-Status wird Clientseitig gehalten.
 
   .---------.                        .------------.
   |         | ->    PUT /foo      -> |            |
@@ -83,12 +83,12 @@ Obwohl HTTP-Methoden wie C<PUT>, C<GET> und C<DELETE> nicht direkt Teil
 der REST Architektur sind, funktionieren sie sehr gut mit ihr und werden
 normalerweise benutzt um C<ressources> zu steuern.
 
-=head2 Sitzungen
+=head2 Sessions
 
 HTTP wurde als zustandsloses Protokoll entwickelt. Web-Server wissen nichts
 über vorgehende Anfragen, was natürlich nutzerfreundliche Loginsystem sehr
 knifflig macht.
-Sitzungen lösen dieses Problem, indem sie den Webanwendungen erlauben
+Sessions lösen dieses Problem, indem sie den Webanwendungen erlauben
 zustandsbehaftete Informationen über mehrere HTTP-Anfragen zu erhalten.
 
   GET /login?user=sri&pass=s3cret HTTP/1.1
@@ -108,8 +108,8 @@ zustandsbehaftete Informationen über mehrere HTTP-Anfragen zu erhalten.
   Content-Length: 16
   Hello again sri.
 
-Traditionell sind alle Sitzungsdaten auf dem Server gespeichert und nur die
-Sitzungskennung wird zwischen dem Browser und Webserver in Form von Cookies
+Traditionell sind alle Session-Daten auf dem Server gespeichert und nur die
+Session-Kennung wird zwischen dem Browser und Webserver in Form von Cookies
 ausgetauscht.
 
   HTTP/1.1 200 OK
@@ -349,7 +349,7 @@ Schnelle C<GET> Anfragen können direkt von der Kommandozeile gemacht werden.
 
 =head2 Zustand halten
 
-Sitzungen sind in L<Mojolicious> sogut wie direkt einsatzfähig und es wird
+Sessions sind in L<Mojolicious> sogut wie direkt einsatzfähig und es wird
 keine Einrichtung benötigt. Aber wir empfehlen die sicherere C<secret>
 Passphrase zu benutzen.
 
@@ -357,18 +357,18 @@ Passphrase zu benutzen.
 
 Diese Passphrase wird von dem C<HMAC-MD5> Algorithmus genutzt um Signierte
 Cookies sicher zu machen und kann jeder Zeit geändert werden um alle
-bestehenden Sitzungen ungültig zu machen.
+bestehenden Sessions ungültig zu machen.
 
   $self->session(user => 'sri');
   my $user = $self->session('user');
 
-Standardmäßig laufen alle Sitzungen nach einer Stunde ab, für weitere Kontrolle
-kann jedoch der C<expires> Sitzungswert genutzt werden um die Ablaufzeit
+Standardmäßig laufen alle Sessions nach einer Stunde ab, für weitere Kontrolle
+kann jedoch der C<expires> Session-Wert genutzt werden um die Ablaufzeit
 manuell auf eine Zeitspanne in Sekunden zu setzen.
 
   $self->session(expires => time + 3600);
 
-Auch kann die gesamte Sitzung gelöscht werden, indem ein Ablaufdatum in
+Auch kann die gesamte Session gelöscht werden, indem ein Ablaufdatum in
 der Vergangenheit gewählt wird.
 
   $self->session(expires => 1);
@@ -411,7 +411,7 @@ oben weiterreicht, könnte so aussehen.
     # Überprüfe Passwort und rendere "index.html.ep" wenn nötig
     return $self->render unless $self->users->check($user, $pass);
 
-    # Speichere den Benutzernamen in der Sitzung
+    # Speichere den Benutzernamen in der Session
     $self->session(user => $user);
 
     # Speichere eine freundliche Kurzmitteilung auf der Nächsten Seite
@@ -433,7 +433,7 @@ oben weiterreicht, könnte so aussehen.
   get '/logout' => sub {
     my $self = shift;
 
-    # Lasse die Sitzung automatisch auslaufen und lösche sie wiederum
+    # Lasse die Session automatisch auslaufen und lösche sie wiederum
     $self->session(expires => 1);
 
     # Leite zur Hauptseite mit einem 302 um
