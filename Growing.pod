@@ -213,8 +213,8 @@ beliebige Perl-Modul benutzen.
   $ touch lib/MyUsers.pm
   $ chmod 644 lib/MyUsers.pm
 
-Unser Login-Manager wird einfach ein schlichtes altes Perl Modul, ohne alle
-Logik bezogenen Elemente benutzen um Benutzernamen und Passwörter abzugleichen.
+Unser Login-Manager wird einfach ein schlichtes altes Perl Modul ohne den
+Logikteil zur Benutzernamen/Passwortüberprüfung nutzen.
 
   package MyUsers;
 
@@ -243,7 +243,7 @@ Logik bezogenen Elemente benutzen um Benutzernamen und Passwörter abzugleichen.
 
 Eine einfache C<helper> Funktion kann mit der C<helper> Methode von
 L<Mojolicious> registriert werden, um unser C<model> allen Aktionen
-und Templates verfügbar zu machen.S
+und Templates verfügbar zu machen.
 
   #!/usr/bin/env perl
   use Mojolicious::Lite;
@@ -254,14 +254,14 @@ und Templates verfügbar zu machen.S
   # Modellinstanz
   my $users = MyUsers->new;
 
-  # Die Helper Funktion erwiedert unsere Modellinstanz
+  # Die Helper Funktion gibt unsere Modellinstanz zurück
   helper users => sub { return $users };
 
   # /?user=sri&pass=secr3t
   any '/' => sub {
     my $self = shift;
 
-    # Abfrageparameter
+    # Queryparameter
     my $user = $self->param('user') || '';
     my $pass = $self->param('pass') || '';
 
@@ -276,7 +276,7 @@ und Templates verfügbar zu machen.S
   app->start;
 
 Die C<param> Methode unserer L<Mojolicious::Controller> Instanz wird benutzt
-um auf die Frageparameter, POST-Parameter und Routen-Platzhalter
+um auf die Query und POST-Parameter sowie auf die Routen-Platzhalter
 (alle auf einmal) zuzugreifen.
 
 =head2 Testen
@@ -288,8 +288,8 @@ es überall wo möglich zu fördern.
   $ touch t/login.t
   $ chmod 644 t/login.t
 
-L<Test::Mojo> ist ein Skritbarer HTTP-User-Agent, der extra für das Testen
-entwickelt wurde. Er besitzt viele modernste Spaß Funktionen, wie zum Beispiel
+L<Test::Mojo> ist ein programmierbarer HTTP-User-Agent, der extra für das Testen
+entwickelt wurde. Er besitzt viele modernste Spaßfunktionen, wie zum Beispiel
 CSS3-Auswahl basierte für L<Mojo::DOM>.
 
   use Test::More tests => 16;
