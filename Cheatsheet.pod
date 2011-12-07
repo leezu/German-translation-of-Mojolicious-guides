@@ -313,7 +313,7 @@ Standardmäßig wird plattformabhängig ein zufälliges Verzeichnis gewählt.
 =head1 MORE
 
 Du kannst mit den L<Mojolicious::Guides> weitermachen oder einen Blick auf
-die Mojolicious Wiki L<http://github.com/kraih/mojo/wiki> werfen.
+das Mojolicious-Wiki L<http://github.com/kraih/mojo/wiki> werfen.
 Dort findest du eine Menge weitere Dokumentation und Beispiele von
 vielen verschiedenen Leuten.
 

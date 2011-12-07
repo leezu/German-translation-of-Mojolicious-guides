@@ -787,7 +787,7 @@ Sie können alle Kommandos von L<Mojolicious::Commands> verwenden.
 =head1 MEHR
 
 Sie können mit den L<Mojolicious::Guides> weitermachen oder einen Blick auf
-die Mojolicious Wiki L<http://github.com/kraih/mojo/wiki> werfen.
+das Mojolicious-Wiki L<http://github.com/kraih/mojo/wiki> werfen.
 Dort finden Sie eine Menge weitere Dokumentationen und Beispiele von
 vielen verschiedenen Autoren.
 

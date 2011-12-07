@@ -295,7 +295,7 @@ CSS3-Auswahl basierte für L<Mojo::DOM>.
   use Test::More tests => 16;
   use Test::Mojo;
 
-  # Erfasse Anwendung
+  # Lade Anwendung
   use FindBin;
   require "$FindBin::Bin/../myapp.pl";
 
@@ -347,7 +347,7 @@ Schnelle C<GET> Anfragen können direkt von der Kommandozeile gemacht werden.
 
   Welcome sri.
 
-=head2 Zustand halten
+=head2 Verwaltung
 
 Sessions sind in L<Mojolicious> sogut wie direkt einsatzfähig und es wird
 keine Einrichtung benötigt. Aber wir empfehlen die sicherere C<secret>
@@ -374,7 +374,7 @@ der Vergangenheit gewählt wird.
   $self->session(expires => 1);
 
 Für Daten die nur nach der nächsten Anfrage sichtbar sein sollten, wie z.B.
-eine Bestätigungsmittelung nach einer 302 Weiterleitung, kann C<flash> benutzt
+eine Bestätigungsmitteilung nach einer 302 Weiterleitung, kann C<flash> benutzt
 werden.
 
   $self->flash(message => 'Everything is fine.');
@@ -385,7 +385,7 @@ sodass normalerweise ein 4096 Byte Limit, je nach Browser, existiert.
 
 =head2 Endgültiger Prototyp
 
-Ein endgültiger C<myapp.pl> Prototyp, der all Daten aus den Einheits-Tests von
+Ein endgültiger C<myapp.pl> Prototyp, der all Daten aus den Modultests von
 oben weiterreicht, könnte so aussehen.
 
   #!/usr/bin/env perl
@@ -495,7 +495,7 @@ Weg sein kann um den Benutzern zu erlauben ihre Anwendungen anzupassen.
 
 =head2 Vereinfachte Anwendungsklasse
 
-Dies ist das Hertz jeder kompletten L<Mojolicious> Anwendung und wird immer
+Dies ist das Herz jeder kompletten L<Mojolicious> Anwendung und wird immer
 während dem Server-Start instanziiert.
 
   $ touch lib/MyApp.pm
@@ -503,7 +503,7 @@ während dem Server-Start instanziiert.
 
 Wir fangen damit an, alle Aktionen aus C<myapp.pl> zu extrahieren und sie
 in vereinfachte hybride Routen in dem L<Mojolicious::Routes> Router zu
-verwandeln, nichts des tatsächlichen Aktions-Codes muss bearbeitet werden.
+verwandeln, der tatsächliche Aktionscode muss nicht bearbeitet werden.
 
   package MyApp;
   use Mojo::Base 'Mojolicious';
@@ -657,7 +657,7 @@ Zum Schluss kann C<myapp.pl> dann mit einem richtigen L<Mojolicious> Skript erse
   $ touch script/myapp
   $ chmod 744 script/myapp
 
-Die Bibliotheks-Erkennungs Code wurde speziell für verzwickte
+Der Bibliothekserkennungs-Code wurde speziell für verzwickte
 Produktionsumgebungen konzipiert.
 
   #!/usr/bin/env perl
@@ -686,8 +686,8 @@ Produktionsumgebungen konzipiert.
 
 =head2 Vereinfachte Tests
 
-Normale L<Mojolicious> Anwendungen sind etwas leichter zu testen und
-brauchen keine Hilfe mit der Home-Directory Erkennung, sodass
+Normale L<Mojolicious>-Anwendungen sind etwas leichter zu testen und
+brauchen keine Hilfe bei der Homedirectory-Erkennung, sodass
 C<t/login.t> vereinfacht werden kann.
 
   use Test::More tests => 16;
@@ -717,7 +717,7 @@ aber das ist es auf jeden Fall wert!
 =head1 MEHR
 
 Du kannst mit den L<Mojolicious::Guides> weitermachen oder einen Blick auf
-die Mojolicious Wiki L<http://github.com/kraih/mojo/wiki> werfen.
+das Mojolicious-Wiki L<http://github.com/kraih/mojo/wiki> werfen.
 Dort findest du eine Menge weitere Dokumentation und Beispiele von
 vielen verschiedenen Leuten.
 

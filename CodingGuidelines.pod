@@ -107,7 +107,7 @@ Peace!
 =head1 MEHR
 
 Du kannst mit den L<Mojolicious::Guides> weitermachen oder einen Blick auf
-die Mojolicious Wiki L<http://github.com/kraih/mojo/wiki> werfen.
+das Mojolicious-Wiki L<http://github.com/kraih/mojo/wiki> werfen.
 Dort findest du eine Menge weitere Dokumentation und Beispiele von
 vielen verschiedenen Leuten.
 
