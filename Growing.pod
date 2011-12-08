@@ -214,7 +214,7 @@ beliebige Perl-Modul benutzen.
   $ chmod 644 lib/MyUsers.pm
 
 Unser Login-Manager wird einfach ein schlichtes altes Perl Modul ohne den
-Logikteil zur Benutzernamen/Passwortüberprüfung nutzen.
+Logikteil zur Benutzernamen/Passwortüberprüfung.
 
   package MyUsers;
 
@@ -347,7 +347,7 @@ Schnelle C<GET> Anfragen können direkt von der Kommandozeile gemacht werden.
 
   Welcome sri.
 
-=head2 Verwaltung
+=head2 Zustands-Verwaltung
 
 Sessions sind in L<Mojolicious> sogut wie direkt einsatzfähig und es wird
 keine Einrichtung benötigt. Aber wir empfehlen die sicherere C<secret>
