@@ -761,22 +761,22 @@ machen musst ist einen neuen C<handler> hinzuzufügen.
     mine => sub {
       my ($r, $c, $output, $options) = @_;
 
-      # One time use inline template
+      # Einmal inline Template
       my $inline = $options->{inline};
 
-      # Generate relative template path
+      # Generiere relativen Templatepfad
       my $name = $r->template_name($options);
 
-      # Try to find appropriate template in DATA section
+      # Versuche ein passendes Template im DATA Bereich zu finden
       my $content = $r->get_data_template($options, $name);
 
-      # Generate absolute template path
+      # Generiere einen absoluten Templatepfad
       my $path = $r->template_path($options);
 
-      # This part is up to you and your template system :)
+      # Dieser Teil ist dir und deinem Templatesystem überlassen :)
       ...
 
-      # Pass the rendered result back to the renderer
+      # Übermittle das Rendererergebnis zurück an den Renderer
       $$output = 'The rendered result';
     }
   );
