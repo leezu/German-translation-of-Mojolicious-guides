@@ -1,0 +1,802 @@
+
+=encoding utf8
+
+=head1 NAME
+
+Mojolicious::Guides::Rendering - Rendering
+
+=head1 ÜBERSICHT
+
+Dieses Dokument erklärt die Inhaltsschaffung mit dem L<Mojolicious> Renderer.
+
+=head1 KONZEPTE
+
+Grundlagen, die jeder L<Mojolicious> Entwickler kennen sollte.
+
+=head2 Renderer
+
+Der Renderer ist eine kleine Blackbox, die gespeicherte Daten unter Einbeziehung
+verschiedener Templatesystme und Datenkodierungsmodulen in tatsächliche
+Antworten verwandelt.
+
+  {text => 'Hello.'}                 -> 200 OK, text/html, 'Hello.'
+  {json => {x => 3}}                 -> 200 OK, application/json, '{"x":3}'
+  {text => 'Oops.', status => '410'} -> 410 Gone, text/html, 'Oops.'
+
+Templates können, wenn vom Entwickler oder den Routen genügend Informationen
+bereitgestellt werden automatisch erkannt werden.
+
+Es wird davon ausgegangen, dass Templatenamen dem C<name.format.handler>
+Schema folgen. C<name> zeigt standardmäßig auf C<controller/action> oder den
+Routennamen und C<format> zeigt auf C<html> sowie C<handler> auf C<ep>.
+
+  {controller => 'users', action => 'list'} -> 'users/list.html.ep'
+  {name => 'foo', format => 'txt'}          -> 'foo.txt.ep'
+  {name => 'foo', handler => 'epl'}         -> 'foo.html.epl'
+
+Alle Templates sollten in dem C<templates> Verzeichnis der Anwendung oder
+der C<DATA> Sektion der Klasse C<main> liegen.
+
+  __DATA__
+  @@ time.html.ep
+  <!DOCTYPE html>
+  <html>
+    <head><title>Time</title></head>
+    <body><%= localtime time %></body>
+  </html>
+
+  @@ hello.txt.ep
+  ...
+
+Der Renderer kann mit Plugins einfach erweitert werden, um zusätzliche Templatesysteme
+zu unterstützen, dazu später mehr.
+
+=head2 Eingebettetes Perl
+
+L<Mojolicious> enthält von Beginn an ein minimalistisches, aber sehr
+leistungsstarkes Templatesystem, welches "Embedded Perl" oder kurz C<ep>
+genannt wird.
+Es erlaubt das Einbetten von Perl Code direkt in den tatsächlichen Inhalt,
+indem es eine kleine Anzahl von speziellen Tags und Zeichen, die am Anfang
+der Zeilen stehen, nutzt.
+
+  <% Perl Code %>
+  <%= Perl Ausdruck, durch XML Ergebnis ersetzt %>
+  <%== Perl Ausdruck, durch Ergebnis ersetzt %>
+  <%# Kommentar, nützlich zum debuggen %>
+  <%% Ersetzt durch "<%", nützlich um Templates zu generieren %>
+  % Perl Code Zeilen, behandelt als "<% line =%>"
+  %= Perl Ausdruck Zeile, behandelt als "<%= line %>"
+  %== Perl Ausdruck Zeile, behandelt als "<%== line %>"
+  %# Kommentarzeile, behandelt als "<%# line =%>"
+  %% Ersetzt durch "%", nützlich um Templates zu generieren
+
+Tags und Zeilen funktionieren fast gleich, aber je nach Kontext wird eines
+normalerweise etwas besser aussehen.
+Semikola werden automatisch an alle Ausdrücke angehängt.
+
+  <% my $i = 10; %>
+  <ul>
+    <% for my $j (1 .. $i) { %>
+      <li>
+        <%= $j %>
+      </li>
+    <% } %>
+  </ul>
+
+  % my $i = 10;
+  <ul>
+    % for my $j (1 .. $i) {
+      <li>
+        %= $j
+      </li>
+    % }
+  </ul>
+
+Ein weiteres Gleichheitszeichen kann zum Ausstreichen von den Zeichen
+C<E<lt>>, C<E<gt>>, C<&>, C<'> and C<"> in den Ergebnissen der Perl Ausdrücke
+benutzt werden. Dies ist Standard um XSS Atacken gegen deine Anwendung zu
+verhindern.
+
+  <%= 'lalala' %>
+  <%== '<p>test</p>' %>
+
+Nur L<Mojo::ByteStream> Objekte sind vom automatischem Ausstreichen
+ausgeschlossen.
+
+  <%= b('<p>test</p>') %>
+
+Du kannst auch ein weiteres Gleichheitszeichen am Ende eines Tags hinzufügen
+um alle umgebenden Leerzeichen entfernen zu lassen. Das ermöglicht dir freies
+Einrücken ohne das Ergebnis zu ruinieren.
+
+  <% for (1 .. 3) { %>
+    <%= $foo =%>
+  <% } %>
+
+Stash-Werte, die keine ungültigen Zeichen in ihren Namen enthalten,
+werden automatisch als normale Variablen im Template initiiert, sowie
+die Kontroller Instanz als C<$self>.
+
+  $self->stash(name => 'tester');
+
+  Hello <%= $name %> from <%= $self->tx->remote_address %>.
+
+Es gibt auch viele Helper Funktionen, aber dazu später mehr.
+  <%= dumper {foo => 'bar'} %>
+
+=head1 BASICS
+
+Die gebräuchlichsten Features, die jeder L<Mojolicious> Entwickler kennen sollte.
+
+=head2 Automatisches Rendering
+
+Der Render kann manuell gestartet werden, indem die C<render> Kontroller-
+Methode aufgerufen wird. Dies ist aber normalerweise nicht notwendig, da
+es automatisch aufgerufen wird, falls noch nichts gerendert wurde,
+sobald der Routen-Dispatcher seine Arbeit beendet hat.
+Dies bedeutet, dass du auch nur auf Templates zeigende Routen haben kannst,
+die keine tatsächlichen Aktionen haben.
+
+  $self->render;
+
+Aber es gibt noch einen großen Unterschied, indem du C<render> manuell
+aufrufst, kannst du sicher gehen, dass das Template die aktuelle
+Kontrollerinstanz und nicht den Standardkontroller, der im C<controller_class>
+Attribut der Anwendungsklasse festgelegt wurde.
+
+=head2 Templates rendern (C<template>)
+
+Der Renderer wird immer versuchen das richtige Template zu erkennen. Du kannst
+jedoch auch den C<template> Stashwert benutzern um ein bestimmtes zu rendern.
+
+  $self->render(template => 'foo/bar');
+
+Ein bestimmtes C<format> und C<handler> zu nutzen ist genauso einfach.
+
+  $self->render(template => 'foo/bar', format => 'txt', handler => 'epl');
+
+Da das Rendern eines speziellen Templates die gewöhnlichste Aufgabe ist, hat
+sie auch einen Shortcut.
+
+  $self->render('foo/bar');
+
+Alle Werte die dem C<render> Aufruf übergeben werden sind nur temporär
+zugeordnet und werden nach dem Aufruf wieder zurückgesetzt.
+
+=head2 Inlinetemplates rendern (C<inline>)
+
+Manche Renderer, wie zum Beispiel C<ep> ermöglichen es Templates inline
+zu übergeben.
+
+  $self->render(inline => 'The result is <%= 1 + 1%>.');
+
+Da die automatische Erkennung auf einem Pfad beruht, muss du möglicherweise
+auch einen C<handler> übergeben.
+
+  $self->render(inline => "<%= shift->param('foo') %>", handler => 'epl');
+
+=head2 Text rendern (C<text>)
+
+Perl Zeichen können mit dem C<text> Stashwert gerendert werden. Der übergebene
+Inhalt wird automatisch in Bytes kodiert.
+
+  $self->render(text => 'Hello Wörld!');
+
+=head2 Daten rendern (C<data>)
+
+Die Original Bytes können mit dem C<data> Stashwert gerendert werden. Dabei
+wird keine Kodierung durchgeführt.
+
+  $self->render(data => $octets);
+
+=head2 JSON rendern (C<json>)
+
+Der C<json> Stashwert erlaubt es dir Perl Strukturen an den Renderer zu
+übergeben, die direkt in JSON kodiert werden.
+
+  $self->render(json => {foo => [1, 'test', 3]});
+
+=head2 Teilweises rendern (C<partial>)
+
+Manchmal möchtest du vielleicht auf das gerenderte Ergebnis zugreifen,
+zum Beispiel um E-Mails zu generieren. Dies kannst du mit dem C<partial>
+Stashwert erreichen.
+
+  my $html = $self->render('mail', partial => 1);
+
+=head2 Statuscode (C<status>)
+
+Der Statuscode der Antworten kann mit dem C<status> Stashwert geändert werden.
+
+  $self->render(text => 'Oops.', status => 500);
+
+=head2 Contenttyp (C<format>)
+
+Der C<Content-Type> Header der Antwort basiert auf dem MIME-Typ Mapping des
+C<format> Stashwertes.
+
+  $self->render(text => 'Hello.', format => 'txt');
+
+Diese Mappings können mit L<Mojolicious/"types"> einfach geändert werden.
+
+  # Anwendung
+  package MyApp;
+  use Mojo::Base 'Mojolicious';
+
+  sub startup {
+    my $self = shift;
+
+    # Neuen MIME-Typ hinzufügen
+    $self->types->type(txt => 'text/plain; charset=utf-8');
+  }
+
+  1;
+
+=head2 Stash Daten
+
+Daten können durch C<stash> in jedem der nativen Perl Datentypen an die
+Templates übergeben werden.
+
+  $self->stash(author => 'Sebastian');
+  $self->stash(frameworks => ['Catalyst', 'Mojolicious']);
+  $self->stash(examples => {tweetylicious => 'a microblogging app'});
+
+  %= $author
+  %= $frameworks->[1]
+  %= $examples->{tweetylicious}
+
+Da alles einfach nur Perl ist, funktionieren normale Kontrollstrukturen auch
+einfach.
+
+  % for my $framework (@$frameworks) {
+    <%= $framework %> was written by <%= $author %>.
+  % }
+
+  % while (my ($app, $description) = each %$examples) {
+    <%= $app %> is a <%= $description %>.
+  % }
+
+=head2 Inhaltsnegoziierung
+
+Für Ressourcen mit verschiedenen Repräsentationen, dich auch eine tatsächliche
+C<RESTful> Inhaltsbeschaffenheit fordern kannst du auch C<respond_to> anstelle
+des C<render> benutzen.
+
+  # /hello (Accept: application/json) -> "json"
+  # /hello (Accept: text/xml)         -> "xml"
+  # /hello.json                       -> "json"
+  # /hello.xml                        -> "xml"
+  # /hello?format=json                -> "json"
+  # /hello?format=xml                 -> "xml"
+  $self->respond_to(
+    json => {json => {hello => 'world'}},
+    xml  => {text => '<hello>world</hello>'}
+  );
+
+Die am besten passende Repräsentation wird automatisch vom C<Accept> Anfrage-
+Header, C<format> Stashwert oder C<format> GET/POST Parameter ausgewählt.
+
+  $self->respond_to(
+    json => {json => {hello => 'world'}},
+    html => sub {
+      $self->content_for(head => '<meta name="author" content="sri" />');
+      $self->render(template => 'hello', message => 'world')
+    }
+  );
+
+Callbacks können für Repräsentationen genutzt werden, die zu komplex sind um
+in einen einzelnen C<render> Aufruf zu passen.
+
+  # /hello (Accept: application/json) -> "json"
+  # /hello (Accept: text/html)        -> "html"
+  # /hello (Accept: image/png)        -> "any"
+  # /hello.json                       -> "json"
+  # /hello.html                       -> "html"
+  # /hello.png                        -> "any"
+  # /hello?format=json                -> "json"
+  # /hello?format=html                -> "html"
+  # /hello?format=png                 -> "any"
+  $self->respond_to(
+    json => {json => {hello => 'world'}},
+    html => {template => 'hello', message => 'world'},
+    any  => {text => '', status => 204}
+  );
+
+Und wenn keine brauchbare Repräsentation gefunden wird, wird das C<any>
+Fallback genutzt oder einfach eine leere C<204> Antwort automatisch gerendert.
+
+=head2 Helper
+
+Helper sind kleine Funktionen die du in Templates und Kontrollercode nutzen
+kannst.
+
+  %= dumper [1, 2, 3]
+
+  my $serialized = $self->dumper([1, 2, 3]);
+
+Der C<dumper> Helfer wird zum Beispiel den L<Data::Dumper> zum serialisieren
+von jeder Datenstruktur die ihm übergeben wird benutzen. Das kann sehr
+praktisch beim Debuggen sein. Wir unterscheiden zwischen C<default helpers>,
+die eher für den generellen Gebrauch gedacht sind, wie zum Beispiel C<dumper>
+und C<tag helpers>, die Templatespezifisch sind und eher zum C<HTML>-Tag
+generieren genutzt werden.
+
+  %= javascript '/script.js'
+
+  %= javascript begin
+    var a = 'b';
+  % end
+
+Eine Liste aller mitgelieferten Helper kann in
+L<Mojolicious::Plugin::DefaultHelpers> und
+L<Mojolicious::Plugin::TagHelpers> gefunden werden.
+
+=head2 Layouts
+
+Die meiste Zeit, während du C<ep> Templates nutzt, wirst du deine generierten
+Inhalte in ein HTML Skelett einlegen wollen. Dank Layouts ist das überhaupt
+kein Problem.
+
+  @@ foo/bar.html.ep
+  % layout 'mylayout';
+  Hello World!
+
+  @@ layouts/mylayout.html.ep
+  <!DOCTYPE html>
+  <html>
+    <head><title>MyApp</title></head>
+    <body><%= content %></body>
+  </html>
+
+Du wählst einfach das passende Layout mit dem C<layout> Helper und platzierst
+das Ergebnis des aktuellen Templates mit dem C<content> Helper.
+Du kannst auch normale Stashwerte an den C<layout> Helper übergeben.
+
+  @@ foo/bar.html.ep
+  % layout 'mylayout', title => 'Hi there';
+  Hello World!
+
+  @@ layouts/mylayout.html.ep
+  <!DOCTYPE html>
+  <html>
+    <head><title><%= $title %></title></head>
+    <body><%= content %></body>
+  </html>
+
+Anstelle des C<layout> Helpers kannst du auch einfach den C<layout> Stashwert
+benutzen, oder C<render> mit einem C<layout> Argument aufrufen.
+
+  $self->render(template => 'mytemplate', layout => 'mylayout');
+
+Um einen C<layout> Stashwert anwendungsweit festzulegen kannst du C<defaults>
+nutzen.
+
+  # Anwendung
+  package MyApp;
+  use Mojo::Base 'Mojolicious';
+
+  sub startup {
+    my $self = shift;
+
+    # Standard Layout
+    $self->defaults(layout => 'mylayout');
+  }
+
+  1;
+
+=head2 Teilweise Templates einschließen
+
+Wie die meisten Helfer ist C<include> nur ein Shortcut um dein Leben einfacher
+zu machen.
+
+  @@ foo/bar.html.ep
+  <!DOCTYPE html>
+  <html>
+    %= include 'header'
+    <body>Bar</body>
+  </html>
+
+  @@ header.html.ep
+  <head><title>Howdy</title></head>
+
+Anstelle von C<inclide> kannst du auch den C<render> mit dem C<partial>
+Argument aufrufen.
+
+  @@ foo/bar.html.ep
+  <!DOCTYPE html>
+  <html>
+    %= $self->render('header', partial => 1)
+    <body>Bar</body>
+  </html>
+
+  @@ header.html.ep
+  <head><title>Howdy</title></head>
+
+Aber es gibt einen kleinen Unterschied zwischen den Beiden. Wenn du Stashwerte
+an C<include> übergibst, werden diese automatisch lokalisiert und nur im
+teilweisen Template verfügbar sein.
+
+  @@ foo/bar.html.ep
+  <!DOCTYPE html>
+  <html>
+    %= include 'header', title => 'Hello'
+    <body>Bar</body>
+  </html>
+
+  @@ header.html.ep
+  <head><title><%= $title %></title></head>
+
+=head2 Wiederbenutzbare Template Blöcke
+
+Es macht niemals Spaß sich selber zu wiederholen. Deshalb kannst du
+wiederbenutzbare Template Blöcke in C<ep> erstellen, die fast genauso wie
+normale Perl Funktionen funktionieren.
+
+  <% my $block = begin %>
+    <% my $name = shift; %>
+    Hello <%= $name %>.
+  <% end %>
+  <%= $block->('Sebastian') %>
+  <%= $block->('Sara') %>
+
+Blöcke sind immer durch C<begin> und C<end> abgegrenzt.
+
+  % my $block = begin
+    % my $name = shift;
+    Hello <%= $name %>.
+  % end
+  % for (1 .. 10) {
+    %= $block->('Sebastian')
+  % }
+
+Eine naive übersetzung zu equivalentem Perlcode könnte wie folgt aussehen.
+
+  my $output = '';
+  my $block  = sub {
+    my $name   = shift;
+    my $output = '';
+    $output .= "Hello $name.";
+    return $output;
+  }
+  for (1 .. 10) {
+    $output .= $block->('Sebastian');
+  }
+  print $output;
+
+=head2 Inhaltsblöcke
+
+Blöcke und der C<content_for> Helper können auch genutzt werden um ganze Bereiche
+des Templates an das Layout weiterzugeben.
+
+  @@ foo/bar.html.ep
+  % layout 'mylayout';
+  % content_for header => begin
+    <meta http-equiv="Content-Type" content="text/html">
+  % end
+  <div>Hello World!</div>
+  % content_for header => begin
+    <meta http-equiv="Pragma" content="no-cache">
+  % end
+
+  @@ layouts/mylayout.html.ep
+  <!DOCTYPE html>
+  <html>
+    <head><%= content_for 'header' %></head>
+    <body><%= content %></body>
+  </html>
+
+=head2 Templatevererbung
+
+Vererbung bringt das Layoutkonzept von eben noch eine Stufe höher. Es erlaubt
+dir ein Skeletttemplate mit benannten C<content> Blöcken zu bauen, die von
+Kindertemplates überschrieben werden können.
+
+  @@ first.html.ep
+  <!DOCTYPE html>
+  <html>
+    <head><title>Hello</title></head>
+    <body>
+      %= content header => begin
+        Default header
+      % end
+      <div>Hello World!</div>
+      %= content footer => begin
+        Default footer
+      % end
+    </body>
+  </html>
+
+  @@ second.html.ep
+  % extends 'first';
+  % content header => begin
+    New header
+  % end
+
+Dieser Ablauf könnte so immer weiter gehen um ein großes Maß an Template
+Wiederverwendung zu ermöglichen.
+
+=head2 Merken von Templateblöcken
+
+Compilierte Templates werden immer im Speicher gehalten, aber mit dem
+C<memorize> Helper kannst du noch einen Schritt weiter gehen und verhindern,
+dass Templateblöcke mehr als einmal ausgeführt werden.
+
+  %= memorize begin
+    This template was compiled at <%= localtime time %>.
+  % end
+
+=head2 Helper hinzufügen
+
+Das Hinzufügen und Neudefinieren von Helpern ist sehr einfach. Du kannst sie
+benutzen um so gut wie alles zu machen.
+
+  use Mojolicious::Lite;
+
+  helper debug => sub {
+    my ($self, $string) = @_;
+    $self->app->log->debug($string);
+  };
+
+  get '/' => sub {
+    my $self = shift;
+    $self->debug('action');
+  } => 'index';
+
+  app->start;
+  __DATA__
+
+  @@ index.html.ep
+  % debug 'template';
+
+Helper können auch Templateblöcke als letztes Argument nutzen. Das macht
+es zum Beispiel sehr angenehm Tag Helper und Filter zu nutzen.
+
+  use Mojolicious::Lite;
+  use Mojo::ByteStream;
+
+  helper trim_newline => sub {
+    my ($self, $block) = @_;
+    my $result = $block->();
+    $result =~ s/\n//g;
+    return Mojo::ByteStream->new($result);
+  };
+
+  get '/' => 'index';
+
+  app->start;
+  __DATA__
+
+  @@ index.html.ep
+  %= trim_newline begin
+    Some text.
+    %= 1 + 1
+    More text.
+  % end
+
+Das Verpacken des Helperergebnisses in ein L<Mojo::ByteStream> Objekt kann
+unabsichtliches doppeltes Escaping verhindern.
+
+=head2 Helperplugins
+
+Manche Helper können dir so nützlich sein, dass du sie zwischen verschiedenen
+Anwendungen teilen willst. Plugins machen das sehr einfach.
+
+  package Mojolicious::Plugin::DebugHelper;
+  use Mojo::Base 'Mojolicious::Plugin';
+
+  sub register {
+    my ($self, $app) = @_;
+    $app->helper(debug => sub {
+      my ($self, $string) = @_;
+      $self->app->log->debug($string);
+    });
+  }
+
+  1;
+
+Die C<register> Methode wird aufgerufen werden, sobald du das Plugin lädst.
+
+  use Mojolicious::Lite;
+
+  plugin 'DebugHelper';
+
+  get '/' => sub {
+    my $self = shift;
+    $self->debug('It works.');
+    $self->render_text('Hello.');
+  };
+
+  app->start;
+
+Ein Skelett für eine komplett C<CPAN> kompatibles Plugin-Distribution
+kann automatisch generiert werden.
+
+  $ mojo generate plugin DebugHelper
+
+Und wenn du ein C<PAUSE> Account hast (welches du unter L<http://pause.perl.org>
+erstellen kannst), bist du nur noch ein paar Kommandos davon entfernt es
+zu C<CPAN> zu releasen.
+
+  $ perl Makefile.PL
+  $ make test
+  $ make manifest
+  $ make dist
+  $ mojo cpanify -u USER -p PASS Mojolicious-Plugin-DebugHelper-0.01.tar.gz
+
+=head2 Spezifische C<exception> und C<not_found> Templates
+
+Während die mitgelieferten C<exception> und C<not_found> Templates sehr
+nützlich bei der Entwicklung sind, möchtest du deinen Nutzern wahrscheinlich
+etwas mehr anwendungsbezogenes zeigen.
+Daher probiert L<Mojolicious> immer zuerst C<exception.$mode.$format.*>
+oder C<not_found.$mode.$format.*> zu rendern, bevor es die mitgelieferten
+Standardtemplates benutzt,
+
+  @@ not_found.production.html.ep
+  <!DOCTYPE html>
+  <html>
+    <head><title>Page Not Found</title></head>
+    <body>Page does not seem to exist.</body>
+  </html>
+
+=head1 FORTGESCHRITTEN
+
+Seltener genutzte und leistungsstarke Features.
+
+=head2 Stückchenweise-Übertragungs-Enkodierung
+
+Bei sehr dynamischen Inhalten weißt du möglicherweise nicht die Antwort
+C<Content-Length> im Vorraus. Hier wird C<chunked> C<Transfer-Encoding>
+praktisch. Ein häufiger Nutzen wäre den C<head> Bereich eines HTML Dokumentes
+im Vorraus an den Browser zu senden und somit das Laden von Bildern und
+Stylesheets zu beschleunigen.
+
+  $self->write_chunk('<html><head><title>Example</title></head>', sub {
+    my $self = shift;
+    $self->finish('<body>Example</body></html>');
+  });
+
+Der optionale Drain Callback stellt sicher, dass alle vorherigen Teile
+geschrieben wurden bevor der Prozess weitergeht.
+Ein leerer Teil oder ein C<finish> Aufruf markiert das Ende des Streams.
+
+  29
+  <html><head><title>Example</title></head>
+  1b
+  <body>Example</body></html>
+  0
+
+Besonders in Komnination mit langen Verbindungstimeouts kann dies sehr
+praktisch für Comet (C<long polling>) sein.
+Jedoch funktioniert dies möglicherweise aufgrund der Limitationen einiger
+Webserver nicht in allen Einsatzumgebungen perfekt.
+
+=head2 Enkodierung
+
+Es wird erwartet, dass Templates, die in Dateien gespeichert sind, C<UTF-8>
+kodiert sind, aber das kann einfach geändert werden.
+
+  # Application
+  package MyApp;
+  use Mojo::Base 'Mojolicious';
+
+  sub startup {
+    my $self = shift;
+
+    # Different encoding
+    $self->renderer->encoding('koi8-r');
+  }
+
+  1;
+
+Alle Templates des DATA Bereiches sind an die Enkodierung des Perl Skriptes
+gebunden, also vergesse nicht das L<utf8> Pragma, wenn nötig, zu benutzen.
+
+  use Mojolicious::Lite;
+  use utf8;
+
+  get '/heart';
+
+  app->start;
+  __DATA__
+
+  @@ heart.html.ep
+  I ♥ Mojolicious!
+
+
+=head2 Base64 enkodierte DATA-Dateien
+
+Base64 enkodierte statische Dateien wie zum Beispiel Bilder können einfach in
+dem C<DATA> Bereich deiner Anwendung gespeichert werden. Ähnlich wie bei
+Templates.
+
+  @@ favicon.ico (base64)
+  ...base64 encoded image...
+
+=head2 Aufblasende DATA Templates
+
+Templates, die in Dateien gespeichert sind werden Dateien in dem C<DATA>
+Bereich vorgezogen. Das erlaubt dir einige Standardtemplates in deiner
+Anwendung festzulegen, die die Benutzer später anpassen können.
+Das C<inflate> Kommando schreibt alle Templates und statischen Dateien
+aus dem C<DATA> Bereich in tatsächliche Dateien in den C<templates> und
+C<public> Verzeichnissen.
+
+  $ ./myapp.pl inflate
+
+=head2 Anpassung des Template Syntaxes
+
+Du kannst einfach den ganzen Template Syntax ändern, indem du das C<ep_renderer>
+Plugin mit einer angepassten Konfiguration lädst.
+
+  use Mojolicious::Lite;
+
+  plugin EPRenderer => {
+    name     => 'mustache',
+    template => {
+      tag_start => '{{',
+      tag_end   => '}}'
+    }
+  };
+
+  get '/' => 'index';
+
+  app->start;
+  __DATA__
+
+  @@ index.html.mustache
+  Hello {{= $name }}.
+
+L<Mojo::Template> enthält die komplette Liste der verfügbaren Optionen.
+
+=head2 Füge dein Lieblingstemplate-System hinzu
+
+Vielleicht bevorzugst du ein anderes Template System als C<ep>. Alles, was du
+machen musst ist einen neuen C<handler> hinzuzufügen.
+
+  use Mojolicious::Lite;
+
+  app->renderer->add_handler(
+    mine => sub {
+      my ($r, $c, $output, $options) = @_;
+
+      # One time use inline template
+      my $inline = $options->{inline};
+
+      # Generate relative template path
+      my $name = $r->template_name($options);
+
+      # Try to find appropriate template in DATA section
+      my $content = $r->get_data_template($options, $name);
+
+      # Generate absolute template path
+      my $path = $r->template_path($options);
+
+      # This part is up to you and your template system :)
+      ...
+
+      # Pass the rendered result back to the renderer
+      $$output = 'The rendered result';
+    }
+  );
+
+  get '/' => 'index';
+
+  app->start;
+  __DATA__
+
+  @@ index.html.mine
+  ...
+
+Da die meisten Templatesysteme keine Templates in dem C<DATA> Bereich
+unterstützen, liefert der Renderer Methoden, die dir damit helfen können.
+
+=head1 MORE
+
+Du kannst mit den L<Mojolicious::Guides> weitermachen oder einen Blick auf
+das Mojolicious-Wiki L<http://github.com/kraih/mojo/wiki> werfen.
+Dort findest du eine Menge weitere Dokumentation und Beispiele von
+vielen verschiedenen Leuten.
+
+=cut
