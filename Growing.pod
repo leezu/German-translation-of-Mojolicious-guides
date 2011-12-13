@@ -37,7 +37,7 @@ Webframeworks heutzutage, eingeschlossen L<Mojolicious>.
 Der C<controller> empfängt eine Useranfrage, reicht die ankommenden Daten an
 das C<model> weiter und empfängt von diesem wieder Daten, die dann von C<view>
 zu der tatsächlichen Antwort umgewandelt werden.
-Aber nehmen Sie zur Kenntnis, dass dieses Modell nur ein Leitfaden ist, der
+Aber nimm zur Kenntnis, dass dieses Modell nur ein Leitfaden ist, der
 meistens zu saubererem und besser zu pflegendem Code führt. Es ist keine
 Regel, an die sich um jeden Preis gehalten werden muss.
 
@@ -138,8 +138,8 @@ welches für eine schnelle Prototypensimulation optimiert ist.
 
 =head2 Unterschiede
 
-Sie kennen wahrscheinlich dieses Gefühl, wenn sie eine richtig coole Idee
-haben, und Sie sie so schnell wie möglich ausprobieren möchten. Genau deshalb
+Du kennst wahrscheinlich dieses Gefühl, wenn du eine richtig coole Idee
+hast und sie so schnell wie möglich ausprobieren möchtest. Genau deshalb
 brauchen L<Mojolicious::Lite> Anwendungen auch nicht mehr als eine einzige
 Datei.
 
