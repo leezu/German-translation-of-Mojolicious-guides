@@ -5,7 +5,7 @@ Mojolicious::Guides::Cookbook - Cookbook
 
 =head1 ÜBERBLICK
 
-Dieses Dokument enthält viele spaßigen Rezepte für das Kochen mit L<Mojolicious>.
+Dieses Dokument enthält viele Spaßrezepte für das Kochen mit L<Mojolicious>.
 
 =head1 EINRICHTUNG
 
