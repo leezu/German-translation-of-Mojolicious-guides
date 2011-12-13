@@ -289,8 +289,8 @@ es überall wo möglich zu fördern.
   $ chmod 644 t/login.t
 
 L<Test::Mojo> ist ein programmierbarer HTTP-User-Agent, der extra für das Testen
-entwickelt wurde. Er besitzt viele modernste Spaßfunktionen, wie zum Beispiel
-CSS3-Auswahl basierte für L<Mojo::DOM>.
+entwickelt wurde. Er besitzt viele modernste und Spaß machende Funktionen, wie
+zum Beispiel CSS3 basierte Auswahl für L<Mojo::DOM>.
 
   use Test::More tests => 16;
   use Test::Mojo;
