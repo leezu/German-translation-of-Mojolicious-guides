@@ -5,12 +5,12 @@ Mojolicious::Guides::Cookbook - Cookbook
 
 =head1 ÜBERBLICK
 
-Dieses Dokument enthält viele Spaßrezepte für das Kochen mit L<Mojolicious>.
+Dieses Dokument enthält viele lustige Rezepte für das Kochen mit L<Mojolicious>.
 
 =head1 EINRICHTUNG
 
-Wie Sie L<Mojolicious>- und L<Mojolicious::Lite>-Anwendungen auf verschiedenen 
-Plattformen zum Laufen bekommen.
+Wie L<Mojolicious>- und L<Mojolicious::Lite>-Anwendungen auf verschiedenen 
+Plattformen zum Laufen gebracht werden.
 
 =head2 Integrierter Server
 
@@ -38,7 +38,7 @@ funktioniert.
 =head2 Hypnotoad
 
 Für größere Anwendungen beinhaltet L<Mojolicious> den für UNIX optimierten 
-Webserver L<Mojo::Server::Hypnotoad>, welcher es Ihnen ermöglicht die Vorteile von 
+Webserver L<Mojo::Server::Hypnotoad>, welcher es ermöglicht, die Vorteile von 
 Multicore-CPUs und copy-on-write zu nutzen.
 
   Mojo::Server::Hypnotoad
@@ -60,17 +60,17 @@ Die Konfigurationsdateien sind einfache Perlskripte für größtmögliche Anpass
 
 Einer seiner größten Vorteile ist jedoch die Unterstützung für einfache 
 Upgrades ohne Ausfallzeiten.
-Das bedeutet, dass Sie L<Mojolicious>, Perl oder sogar Systembibliotheken während 
-der Laufzeit upgraden können, ohne den Server anzuhalten oder ohne eine einzelne
+Das bedeutet, dass L<Mojolicious>, Perl oder sogar Systembibliotheken während 
+der Laufzeit geupgradet werden können, ohne den Server anhalten zu müssen oder ohne eine einzelne
 eingehende Verbindung zu verlieren, einfach indem der Befehl oberhalb 
 abermals ausführt wird.
 
   $ hypnotoad script/myapp
   Starting hot deployment for Hypnotoad server 31841.
 
-Wenn Sie Hypnotoad hinter einem Reverse Proxy verwenden, könnte es sein, dass Sie 
-Proxy-Unterstützung ermöglichen möchten.
-Das erlaubt L<Mojolicious>- die C<X-Forwarded-For>-, C<X-Forwarded-Host>- und 
+Wenn Hypnotoad hinter einem Reverse Proxy verwendet wird, könnte es sein, dass 
+Proxy-Unterstützung ermöglicht werden soll.
+Das erlaubt L<Mojolicious> die C<X-Forwarded-For>-, C<X-Forwarded-Host>- und 
 C<X-Forwarded-HTTPS>-Header automatisch aufzusammeln.
 
   # hypnotoad.conf
@@ -116,14 +116,14 @@ sieht sehr ähnlich aus, wie die von Nginx oberhalb.
 
 =head2 Apache/CGI
 
-C<CGI> wird von Haus aus unterstützt und die L<Mojolicious> Anwendung stellt automatisch 
-fest, ob es als C<CGI>-Skript ausgeführt wird.
+C<CGI> wird von Haus aus unterstützt außerdem stellt die L<Mojolicious> Anwendung automatisch 
+fest, ob es als C<CGI>-Skript ausgeführt werden muss.
 
   ScriptAlias / /home/sri/myapp/script/myapp/
 
 =head2 PSGI/Plack
 
-L<PSGI> ist eine Schnittstelle zwischen dem Perl Web Frameworks und Webservern.
+L<PSGI> ist eine Schnittstelle zwischen Perl Web Frameworks und Webservern.
 L<Plack> ist außerdem ein Perlmodul und Toolkit, welches PSGI Middleware, Helfer und Adapter 
 zu Webservern enthält.
 L<PSGI> und L<Plack> sind inspiriert von Python's WSGI und Ruby's Rack.
@@ -133,22 +133,22 @@ L<Mojolicious> Anwendungen können sehr einfach mit L<Plack> eingesetzt werden.
   HTTP::Server::PSGI: Accepting connections at http://0:5000/
 
 L<Plack> stellt viele Server- und Protocol-Adapter bereit, wie C<FCGI>, C<SCGI> und C<mod_perl>.
-Sie sollten darauf achten, dass C<plackup> von dem Home-Verzeichnis der Anwendung 
+Es sollte darauf geachtet werden, dass C<plackup> von dem Home-Verzeichnis der Anwendung 
 ausgeführt wird, denn sonst könnten Bibliotheken nicht gefunden werden.
 
   $ plackup ./script/myapp -s FCGI -l /tmp/myapp.sock
 
 Da C<plackup> einen eigenartigen Trick zum Laden der Skripte verwendet, ist 
 L<Mojolicious> nicht immer im Stande das Home-Verzeichnis der Anwendungen 
-aufzufinden. Ist dies der Fall können Sie einfach die C<MOJO_HOME>-Umgebungsvariable nutzen.
-Sie sollten deshalb beachten, dass C<app-E<gt>start> die letzte Perl-Anweisung 
-im Anwendungsskript sein muss.
+aufzufinden. Ist dies der Fall kann einfach die C<MOJO_HOME>-Umgebungsvariable genutzt werden.
+Es sollte deshalb beachtet werden, dass C<app-E<gt>start> die letzte Perl-Anweisung 
+im Anwendungsskript ist.
 
   $ MOJO_HOME=/home/sri/myapp plackup ./script/myapp
   HTTP::Server::PSGI: Accepting connections at http://0:5000/
 
 Manche Server-Adapter fragen möglicherweise nach einer C<.psgi>-Datei, in diesem Fall
-können Sie diese einfach auf das Anwendungsskript verweisen, da es automatisch als
+kann man diese einfach auf das Anwendungsskript verweisen, da es automatisch als
 solches funktioniert, wenn es das Auftreten einer C<PLACK_ENV> Umgebungsvariable
 entdeckt.
 
@@ -165,7 +165,7 @@ Anwendungslogik zu trennen.
     require 'myapp.pl';
   };
 
-Sie können jedoch auch Middleware direkt in der Anwendung verwenden.
+Es kann jedoch auch Middleware direkt in der Anwendung verwendet werden.
 
   use Mojolicious::Lite;
   use Plack::Builder;
@@ -180,12 +180,12 @@ Sie können jedoch auch Middleware direkt in der Anwendung verwenden.
     app->start;
   };
 
-=head2 Nochmaliges Schreiben
+=head2 Rewriting
 
-Manchmal kann es sein, dass Sie die Anwendung in einer Blackbox-Umgebung einsetzen möchten, wo Sie die 
-Servereinstellungen nicht verändern können, oder hinter einem Reverse Proxy, 
+Manchmal kann es sein, dass Anwendungen in einer Blackbox-Umgebung eingesetzt werden sollen, wo die 
+Servereinstellungen nicht verändert werden können, oder hinter einem Reverse Proxy, 
 welcher zusätzliche Informationen mittels C<X-*>-Header weiterreicht. In solchen 
-Fällen können Sie einen C<before_dispatch>-Hook verwenden, um eingehende Anfragen 
+Fällen kann ein C<before_dispatch>-Hook verwendet werden, um eingehende Anfragen 
 umzuschreiben.
 
   app->hook(before_dispatch => sub {
@@ -196,9 +196,9 @@ umzuschreiben.
 
 =head2 Einbettung
 
-Von Zeit zu Zeit kann es sein, dass Sie Teile von L<Mojolicious>-Anwendungen, wie Konfigurationsdateien, Datenbankverbindungen
-oder Helfer für andere Skripte, wiederverwenden wollen. Mit diesem kleinen Mock-Server
-können Sie diese einfach einbetten.
+Von Zeit zu Zeit kann es sein, dass Teile von L<Mojolicious>-Anwendungen, wie Konfigurationsdateien, Datenbankverbindungen
+oder Helfer für andere Skripte, wiederverwendet  werden sollen. Mit diesem kleinen Mock-Server
+können diese einfach eingebettet werden.
 
   use Mojo::Server;
 
@@ -209,7 +209,7 @@ können Sie diese einfach einbetten.
   # Zugriff auf komplett initialisierte Anwendung
   say $app->static->root;
 
-Sie können auch den eingebauten Webserver verwenden, um L<Mojolicious>-Anwendungen
+Es kann auch der eingebaute Webserver dazu verwendet werden, L<Mojolicious>-Anwendungen
 in fremdartige Umgebungen, wie fremde Event-Schleifen, einzubetten.
 
   use Mojolicious::Lite;
@@ -241,8 +241,8 @@ Pull-Model zu verlassen.
 Das WebSocket-Protocol bietet doppelt-ausgerichtete Kommunikationskanäle mit 
 geringer Wartezeit zwischen Clients und Servern.
 Nachrichten empfangen ist genauso einfach, wie das C<message>-Event der Transaktion 
-zu abonnieren. Es sollte Ihnen jedoch bewusst sein, dass dies alles auf Events basiert, 
-sodass Sie diese nicht zu lange abblocken sollten.
+zu abonnieren. Es sollte jedoch klar sein, dass dies alles auf Events basiert, 
+sodass diese nicht zu lange geblockt werden sollten.
 
   use Mojolicious::Lite;
 
@@ -317,8 +317,8 @@ macht, L<Test::Mojo> API zu verwenden.
 =head2 EventSource
 
 HTML5 EventSource ist eine spezielle Form des langen Polling, bei welchem man 
-DOM-Events direkt vom Server zum Client senden kann. Es wirkt einseitig, was bedeutet, dass
-Sie Ajax-Anfragen nutzen müssen, um Daten vom Client zum Server zu senden. Der 
+DOM-Events direkt vom Server zum Client senden kann. Er wirkt einseitig, was bedeutet, dass
+Ajax-Anfragen genutzt werden müssen, um Daten vom Client zum Server zu senden. Der 
 Vorteil ist jedoch die geringe Anforderung an die Infrastruktur, seit das HTTP-Protokoll
 für den Transport wieder verwendet wird.
 
@@ -370,7 +370,7 @@ für den Transport wieder verwendet wird.
   </html>
 
 Das C<message>-Event wird bei jeder neuen Log-Nachricht ausgegeben und das
-C<finish>-Event wird gleich nachdem die Transaktion beendet wird ausgegeben.
+C<finish>-Event wird gleich nach Beendung der Transaktion ausgegeben.
 
 =head1 USER AGENT
 
@@ -378,7 +378,7 @@ Wenn wir sagen, dass L<Mojolicious> ein Web-Framework ist, ist das wirklich erns
 
 =head2 Web Scraping
 
-Informationen von Webseiten kratzen hat zuvor noch nie so viel Spaß gemacht.
+Informationen aus Webseiten herauskitzeln hat noch nie so viel Spaß gemacht.
 Der eingebaute HTML5/XML-Parser L<Mojo::DOM> unterstützt alle CSS3-Selektoren, 
 welche für einen unabhängigen Parser Sinn ergeben.
 
@@ -394,13 +394,13 @@ welche für einen unabhängigen Parser Sinn ergeben.
     say 'Heading: ', shift->all_text;
   });
 
-Insbesondere beim Testen von Bestandteilen Ihrer L<Mojolicious>-Anwendung kann 
+Insbesondere beim Testen von Bestandteilen von L<Mojolicious>-Anwendungen kann 
 das ein sehr mächtiges Werkzeug sein.
 
-=head2 JSON web services
+=head2 JSON Web-Services
 
 Die meisten Web-Services heutzutage basieren auf dem JSON Datenaustausch-Format.
-Deswegen wurde in L<Mojolicious> die möglicherweise schnellste pure-Perl-Implementation, L<Mojo::JSON>,  
+Deswegen wurde in L<Mojolicious> die wahrscheinlich schnellste pure-Perl-Implementation, L<Mojo::JSON>,  
 eingebaut.
 
   # Erneuere den Useragenten
@@ -424,7 +424,7 @@ eingebaut.
 
 =head2 Grundlegende Authentifikation
 
-Sie können einfach den Benutzernamen und das Passwort zu der URL hinzufügen.
+Der Benutzername und das Passwort können einfach zu der URL hinzugefügt werden.
 
   my $ua = Mojo::UserAgent->new;
   say $ua->get('https://sri:secret@mojolicio.us/hideout')->res->body;
@@ -433,7 +433,7 @@ Sie können einfach den Benutzernamen und das Passwort zu der URL hinzufügen.
 
 L<Mojo::UserAgent> kann automatisch Weiterleitungen folgen. Das C<start>-Event
 ermöglicht es direkt auf jede Transaktion zuzugreifen, gleich nachdem diese initialisiert
-wurden und bevor Ihnen eine Verbindung zugeordnet wird.
+wurden und bevor jenen eine Verbindung zugeordnet wird.
 
   # Useragent folgt 10 Weiterleitungen
   my $ua = Mojo::UserAgent->new(max_redirects => 10);
@@ -445,15 +445,15 @@ wurden und bevor Ihnen eine Verbindung zugeordnet wird.
     say 'Request: ', $tx->req->url->clone->to_abs;
   });
 
-  # Anfrage, welche aller Vorraussicht nach weitergeleitet wird
+  # Anfrage, welche aller Voraussicht nach weitergeleitet wird
   say 'Title: ', $ua->get('google.com')->res->dom->at('head > title')->text;
 
 Das funktioniert sogar für Proxy-C<CONNECT>-Anfragen.
 
-=head2 Fließende Rückmeldung
+=head2 Streams
 
-Eine fließende Rückmeldung empfangen kann in den meisten HTTP-Clients sehr kompliziert sein, 
-L<Mojo::UserAgent> macht es jedoch wirklich einfach.
+Einen Stream zu empfangen, ist in den meisten HTTP-Clients recht
+kompliziert, mit L<Mojo::UserAgent> geht es jedoch relativ einfach.
 
   # Erstelle eine normale Transaktion
   my $ua = Mojo::UserAgent->new;
@@ -468,12 +468,12 @@ L<Mojo::UserAgent> macht es jedoch wirklich einfach.
   # Verarbeite Transaktion
   $ua->start($tx);
 
-Das C<read>-Event wird für jede Datenmenge ausgegeben, welche empfangen wird. Es behandelt sogar, falls notwendig,   
+Das C<read>-Event wird für jede empfangene Datenmenge ausgegeben. Es behandelt sogar, falls notwendig,   
 C<chunked>-Codierung durchsichtig.
 
-=head2 Kontinuierliche Anfragen
+=head2 Stream-Anfrage
 
-Eine kontinuierliche Anfrage versenden ist schier einfach.
+Eine Stream-Anfrage versenden ist genauso einfach.
 
   # Erstelle eine normale Transaktion
   my $ua = Mojo::UserAgent->new;
@@ -496,12 +496,12 @@ Eine kontinuierliche Anfrage versenden ist schier einfach.
   # Verarbeite Transaktion
   $ua->start($tx);
 
-Der Callback, welcher zu C<write> übergeben wurde, wird immer aufgerufen, sobald die 
+Der Callback, welcher zu C<write> übergeben wurde, wird aufgerufen sobald die 
 gesamten vorherigen Daten aufgeschrieben wurden. 
 
 =head2 Umfangreiche Datei-Downloads
 
-Wenn umfangreiche Dateien mit L<Mojo::UserAgent> heruntergeladen werden, müssen Sie 
+Wenn umfangreiche Dateien mit L<Mojo::UserAgent> heruntergeladen werden, muss man
 sich keine Sorgen um die Speichernutzung machen, da automatisch alles, was größer als 
 C<250KB> ist, in eine temporäre Datei geleitet wird.
 
@@ -510,7 +510,7 @@ C<250KB> ist, in eine temporäre Datei geleitet wird.
   my $tx = $ua->get('latest.mojolicio.us');
   $tx->res->content->asset->move_to('mojo.tar.gz');
 
-Um Sie vor überaus großen Dateien zu schützen, gibt es eine standardmäßige Beschränkung
+Um vor überaus großen Dateien zu schützen, gibt es eine standardmäßige Beschränkung
 von C<5MB>, welche mit der C<MOJO_MAX_MESSAGE_SIZE>-Umgebungsvariable geändert
 werden kann.
 
@@ -526,7 +526,7 @@ Große Dateien hochladen ist sogar noch einfacher.
   $ua->post_form('mojolicio.us/upload',
     {image => {file => '/home/sri/hello.png'}});
 
-Sie müssen sich wieder keine Sorgen um die Speicherverwaltung machen. Alle 
+Es muss sich wieder keine Sorgen um die Speicherverwaltung gemacht werden. Alle 
 Daten werden direkt von der Datei gestreamed. 
 
   # Upload Datei via PUT
@@ -540,8 +540,8 @@ Daten werden direkt von der Datei gestreamed.
 
 L<Mojo::UserAgent> wurde von Grund auf so designed, dass er blockierungsfrei ist.
 Die gesamte Blockierungs-API ist ein komfortabler Wrapper.
-Insbesondere für Arbeitsschritte mit langen Wartezeiten, wie Web-Crawling kann es
-für Sie äußerst nützlich sein, dass viele parallele Verbindungen zur selben Zeit aufrecht
+Insbesondere für Arbeitsschritte mit langen Wartezeiten, wie Web-Crawling kann es 
+äußerst nützlich sein, dass viele parallele Verbindungen zur selben Zeit aufrecht
 erhalten werden können.
 
   # FIFO queue
@@ -587,12 +587,12 @@ erhalten werden können.
   # Starte den Reactor
   Mojo::IOLoop->start;
 
-Sie können die volle Kontrolle über L<Mojo::IOLoop>-Reaktor übernehmen.
+Du kannst die volle Kontrolle über L<Mojo::IOLoop>-Reaktor übernehmen.
 
 =head2 Parallele Block-Anfragen
 
-Sie können Blockverhalten nachahmen, indem Sie eine L<Mojo::IOLoop>-Verzögerung
-verwenden, um mehrfache blockierungsfreie Anfragen zu synchronisieren.
+Es kann Blockverhalten nachgeahmt werden, indem eine L<Mojo::IOLoop>-Verzögerung
+verwendet wird, um mehrfache blockierungsfreie Anfragen zu synchronisieren.
 
   # Synchronisiere blockierungsfreie Anfragen und behalte das Ergebnis
   my $ua    = Mojo::UserAgent->new;
@@ -601,14 +601,14 @@ verwenden, um mehrfache blockierungsfreie Anfragen zu synchronisieren.
   $ua->get('http://mojolicio.us/perldoc' => $delay->begin);
   my ($tx, $tx2) = $delay->wait;
 
-Sie sollten jedoch sich im Klaren sein, dass die resultierenden Transaktionen 
+Man sollte sich jedoch im Klaren sein, dass die resultierenden Transaktionen 
 in einer zufälligen Reihenfolge sein werden.
 
 =head2 Kommandozeile
 
-Hassen Sie es nicht auch riesige HTML-Dateien von der Kommandozeile aus zu überprüfen?
-Dank sei dem C<mojo get>-Kommando, welches das ändern wird. Sie können einfach 
-die Abschnitte auswählen, welche tatsächlich eine Rolle mit den CSS3-Selektoren
+Hasst Du es nicht auch riesige HTML-Dateien von der Kommandozeile aus zu überprüfen?
+Dank sei dem C<mojo get>-Kommando, welches das ändern wird. Es können dadurch einfach 
+die Abschnitte ausgewählt werden, welche tatsächlich eine Rolle mit den CSS3-Selektoren
 von L<Mojo::DOM> spielen.
 
   $ mojo get http://mojolicio.us 'head > title'
@@ -621,7 +621,7 @@ Oder dem textualen Inhalt aller Überschrift-Tags?
 
   $ mojo get http://mojolicio.us 'h1, h2, h3' text
 
-Vielleicht nur dem Text der dritten Überschrift?
+Vielleicht nur den Text der dritten Überschrift?
 
   $ mojo get http://mojolicio.us 'h1, h2, h3' 3 text
 
@@ -644,24 +644,24 @@ Dies kann ein unbezahlbares Toll zum Testen der Anwendungen sein.
 
 =head1 HACKS
 
-Spaß-Hacks, welche Sie nicht all zu oft benutzen werden, jedoch eines Tages sehr nützlich sein können.
+Spaßige Hacks, welche Du nicht all zu oft benutzen wirst, jedoch eines Tages sehr nützlich sein können.
 
 =head2 Schnellere Tests
 
-Hassen Sie es nicht auch auf C<make test> zu warten bis es schließlich fertiggestellt ist?
-In neueren Perlversionen können Sie die C<HARNESS_OPTIONS>-Umgebungsvariable setzen,
+Hasst Du es nicht auch auf C<make test> zu warten bis es schließlich fertiggestellt ist?
+In neueren Perlversionen kann die C<HARNESS_OPTIONS>-Umgebungsvariable gesetzt werden,
 um Vorteile aus mehreren CPUs zu ziehen und Tests parallel auszuführen.
 
   $ HARNESS_OPTIONS=j9 make test
   ...
 
-C<j9>  ermöglicht es 9 Tests zur gleichen Zeit laufen zu lassen, wodurch beispielsweise 
+C<j9> ermöglicht es 9 Tests zur gleichen Zeit laufen zu lassen, wodurch beispielsweise 
 die L<Mojolicious>-Testsuite dreimal schneller auf einen Dual-Core-Laptop fertigstellt wird.
 
 =head2 Kommentare zu Mojolicious hinzufügen
 
-Inzwischen haben Sie wahrscheinlich viele integrierte Kommandos benutzt, welche 
-in L<Mojolicious::Commands> beschrieben wurden, haben Sie eigentlich gewusst, dass
+Inzwischen hast Du wahrscheinlich viele integrierte Kommandos benutzt, welche 
+in L<Mojolicious::Commands> beschrieben wurden, aber hast Du eigentlich gewusst, dass
 neue Kommandos hinzugefügt werden können und das diese automatisch in das Kommandozeilen-Interface
 aufgenommen werden?
 
@@ -681,7 +681,7 @@ aufgenommen werden?
   1;
 
 Es gibt viele weitere nützliche Methoden und Attribute in L<Mojo::Command>, 
-welche Sie benutzen oder überlasten können.
+welche benutzt oder überlastet werden können.
 
   $ mojo spy secret
   The secret of this application is "Mojolicious::Lite".
@@ -691,9 +691,9 @@ welche Sie benutzen oder überlasten können.
 
 =head2 Code gegen die Anwendung ausführen
 
-Haben Sie jemals darüber nachgedacht einen schnellen Einzeiler gegen eine L<Mojolicious>-Anwendung
+Hast Du jemals darüber nachgedacht einen schnellen Einzeiler gegen eine L<Mojolicious>-Anwendung
 auszuführen, um etwas zu testen?
-Dank dem C<eval>-Kommando können Sie dies machen. Die Anwendungsinstanz selbst
+Dank dem C<eval>-Kommando kann dies gemacht werden. Die Anwendungsinstanz selbst
 kann via C<app> aufgerufen werden.
 
   $ mojo generate lite_app
@@ -705,8 +705,8 @@ Die C<verbose>-Optionen gibt automatisch den Rückgabewert zu C<STDOUT> aus.
 
 =head2 Eine Anwendung installierbar machen
 
-Haben Sie jemals darüber nachgedacht eine L<Mojolicious>-Anwendung zu CPAN herauszugeben?
-Es ist viel einfacher als Sie möglicherweise denken.
+Hast Du jemals darüber nachgedacht eine L<Mojolicious>-Anwendung zu CPAN herauszugeben?
+Es ist viel einfacher als Du vielleicht glaubst.
 
   $ mojo generate app
   $ cd my_mojolicious_app
@@ -746,7 +746,7 @@ diese automatisch mit den Modulen installiert werden können.
 
   1;
 
-Das ist wirklich alles. Jetzt können Sie die Anwendung verpacken, wie jedes
+Das ist wirklich alles. Jetzt kann die Anwendung verpackt werden, wie jedes
 andere CPAN-Modul.
 
   $ ./script/my_mojolicious_app generate makefile
@@ -755,15 +755,15 @@ andere CPAN-Modul.
   $ make manifest
   $ make dist
 
-Falls Sie einen C<PAUSE>-Account haben (welcher auf L<http://pause.perl.org>) 
-angefordert werden kann) können Sie es auch hochladen.
+Falls Du einen C<PAUSE>-Account hast (welcher auf L<http://pause.perl.org>
+angefordert werden kann) kannst Du es auch hochladen.
 
   $ mojo cpanify -u USER -p PASS MyMojoliciousApp-0.01.tar.gz
 
 =head2 Hello World
 
 Wenn jedes Byte eine Rolle spielt, so ist dies die kleinste C<Hello World>-Anwendung, 
-welche Sie mit L<Mojolicious::Lite> schreiben können.
+welche mit L<Mojolicious::Lite> geschrieben werden kann.
 
   use Mojolicious::Lite;
   any {text => 'Hello World!'};
@@ -780,15 +780,15 @@ Das C<Hello World>-Beispiel oberhalb geht sogar noch kürzer in einem L<ojo>-Ein
 
   perl -Mojo -e'a({text => "Hello World!"})->start' daemon
 
-Sie können alle Kommandos von L<Mojolicious::Commands> verwenden.
+Es können alle Kommandos von L<Mojolicious::Commands> verwendet werden.
 
   perl -Mojo -e'a({text => "Hello World!"})->start' get -v /
 
 =head1 MEHR
 
-Sie können mit den L<Mojolicious::Guides> weitermachen oder einen Blick auf
-das Mojolicious-Wiki L<http://github.com/kraih/mojo/wiki> werfen.
-Dort finden Sie eine Menge weitere Dokumentationen und Beispiele von
+Du kannst mit den L<Mojolicious::Guides> weitermachen oder einen Blick auf
+das Mojolicious Wiki L<http://github.com/kraih/mojo/wiki> werfen.
+Dort findest Du eine Menge weitere Dokumentationen und Beispiele von
 vielen verschiedenen Autoren.
 
 =cut
