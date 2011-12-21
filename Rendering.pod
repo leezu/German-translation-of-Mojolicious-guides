@@ -7,7 +7,8 @@ Mojolicious::Guides::Rendering - Rendering
 
 =head1 ÜBERSICHT
 
-Dieses Dokument erklärt die Inhaltsschaffung mit dem L<Mojolicious> Renderer.
+Dieses Dokument erklärt die Generierung von Inhalten mit dem L<Mojolicious>
+Renderer.
 
 =head1 KONZEPTE
 
@@ -25,7 +26,7 @@ Antworten verwandelt.
 
 Templates können automatisch erkannt werden, wenn vom Entwickler oder den
 Routen genügend Informationen geliefert werden. Es wird davon ausgegangen,
-dass Templatenamen dem C<name.format.handler> Schema folgen, sowie C<name>
+dass Templatenamen dem C<name.format.handler> Schema folgen, wobei C<name>
 standardmäßig auf C<controller/action> oder den Routennamen, C<format>
 auf C<html> sowie C<handler> auf C<ep> zeigt.
 
@@ -62,7 +63,7 @@ der Zeilen stehen, nutzt.
   <% Perl Code %>
   <%= Perl Ausdruck, durch XML Ergebnis ersetzt %>
   <%== Perl Ausdruck, durch Ergebnis ersetzt %>
-  <%# Kommentar, nützlich zum debuggen %>
+  <%# Kommentar, nützlich zum Debuggen %>
   <%% Ersetzt durch "<%", nützlich um Templates zu generieren %>
   % Perl Code Zeilen, behandelt als "<% Zeile =%>"
   %= Perl Ausdruck Zeile, behandelt als "<%= Zeile %>"
@@ -122,6 +123,7 @@ die Kontroller Instanz als C<$self>.
   Hello <%= $name %> from <%= $self->tx->remote_address %>.
 
 Es gibt auch viele Helper Funktionen, aber dazu später mehr.
+
   <%= dumper {foo => 'bar'} %>
 
 =head1 BASICS
@@ -218,7 +220,7 @@ C<format> Stashwertes.
 
   $self->render(text => 'Hello.', format => 'txt');
 
-Diese Mappings können mit L<Mojolicious/"types"> einfach geändert werden.
+Diese Mappings können mit L<Mojolicious/"types"> einfach erweitert werden.
 
   # Anwendung
   package MyApp;
@@ -257,10 +259,10 @@ einfach.
     <%= $app %> is a <%= $description %>.
   % }
 
-=head2 Inhaltsnegoziierung
+=head2 Formataushandlung
 
-Für Ressourcen mit verschiedenen Repräsentationen, dich auch eine tatsächliche
-C<RESTful> Inhaltsbeschaffenheit fordern kannst du auch C<respond_to> anstelle
+Für Ressourcen mit verschiedenen Repräsentationen, die auch eine tatsächliche
+C<RESTful> Formataushandlung fordern kannst du auch C<respond_to> anstelle
 des C<render> benutzen.
 
   # /hello (Accept: application/json) -> "json"
@@ -285,8 +287,8 @@ Header, C<format> Stashwert oder C<format> GET/POST Parameter ausgewählt.
     }
   );
 
-Callbacks können für Repräsentationen genutzt werden, die zu komplex sind um
-in einen einzelnen C<render> Aufruf zu passen.
+Callback-Funktionen können für Repräsentationen genutzt werden, die zu komplex
+sind um in einen einzelnen C<render> Aufruf zu passen.
 
   # /hello (Accept: application/json) -> "json"
   # /hello (Accept: text/html)        -> "html"
@@ -304,7 +306,7 @@ in einen einzelnen C<render> Aufruf zu passen.
   );
 
 Und wenn keine brauchbare Repräsentation gefunden wird, wird das C<any>
-Fallback genutzt oder einfach eine leere C<204> Antwort automatisch gerendert.
+Fallback genutzt oder einfach automatisch eine leere C<204> Antwort gerendert.
 
 =head2 Helper
 
@@ -319,8 +321,8 @@ Der C<dumper> Helfer wird zum Beispiel den L<Data::Dumper> zum serialisieren
 von jeder Datenstruktur die ihm übergeben wird benutzen. Das kann sehr
 praktisch beim Debuggen sein. Wir unterscheiden zwischen C<default helpers>,
 die eher für den generellen Gebrauch gedacht sind, wie zum Beispiel C<dumper>
-und C<tag helpers>, die Templatespezifisch sind und eher zum C<HTML>-Tag
-generieren genutzt werden.
+und C<tag helpers>, die templatespezifisch sind und eher zum Generieren von
+C<HTML>-Tags genutzt werden.
 
   %= javascript '/script.js'
 
@@ -335,7 +337,7 @@ L<Mojolicious::Plugin::TagHelpers> gefunden werden.
 =head2 Layouts
 
 Die meiste Zeit, während du C<ep> Templates nutzt, wirst du deine generierten
-Inhalte in ein HTML Skelett einlegen wollen. Dank Layouts ist das überhaupt
+Inhalte in ein HTML Skelett einbetten wollen. Dank Layouts ist das überhaupt
 kein Problem.
 
   @@ foo/bar.html.ep
@@ -349,8 +351,8 @@ kein Problem.
     <body><%= content %></body>
   </html>
 
-Du wählst einfach das passende Layout mit dem C<layout> Helper und platzierst
-das Ergebnis des aktuellen Templates mit dem C<content> Helper.
+Du wählst einfach das passende Layout-Template mit dem C<layout> Helper und
+platzierst das Ergebnis des aktuellen Templates mit dem C<content> Helper.
 Du kannst auch normale Stashwerte an den C<layout> Helper übergeben.
 
   @@ foo/bar.html.ep
@@ -387,7 +389,7 @@ nutzen.
 
 =head2 Teilweise Templates einschließen
 
-Wie die meisten Helfer ist C<include> nur ein Shortcut um dein Leben einfacher
+Wie die meisten Helper ist C<include> nur ein Shortcut um dein Leben einfacher
 zu machen.
 
   @@ foo/bar.html.ep
@@ -400,7 +402,7 @@ zu machen.
   @@ header.html.ep
   <head><title>Howdy</title></head>
 
-Anstelle von C<inclide> kannst du auch den C<render> mit dem C<partial>
+Anstelle von C<include> kannst du auch den C<render> mit dem C<partial>
 Argument aufrufen.
 
   @@ foo/bar.html.ep
@@ -414,8 +416,8 @@ Argument aufrufen.
   <head><title>Howdy</title></head>
 
 Aber es gibt einen kleinen Unterschied zwischen den Beiden. Wenn du Stashwerte
-an C<include> übergibst, werden diese automatisch lokalisiert und nur im
-teilweisen Template verfügbar sein.
+an C<include> übergibst, werden diese automatisch lokalisiert und nur in diesem
+Teil des Templates verfügbar sein.
 
   @@ foo/bar.html.ep
   <!DOCTYPE html>
@@ -450,7 +452,7 @@ Blöcke sind immer durch C<begin> und C<end> abgegrenzt.
     %= $block->('Sebastian')
   % }
 
-Eine naive übersetzung zu equivalentem Perlcode könnte wie folgt aussehen.
+Eine naive Übersetzung zu equivalentem Perlcode könnte wie folgt aussehen.
 
   my $output = '';
   my $block  = sub {
@@ -609,14 +611,14 @@ Die C<register> Methode wird aufgerufen werden, sobald du das Plugin lädst.
 
   app->start;
 
-Ein Skelett für eine komplett C<CPAN> kompatibles Plugin-Distribution
+Ein Skelett für eine komplett C<CPAN> kompatible Plugin-Distribution
 kann automatisch generiert werden.
 
   $ mojo generate plugin DebugHelper
 
-Und wenn du ein C<PAUSE> Account hast (welches du unter L<http://pause.perl.org>
+Und wenn du ein C<PAUSE> Account hast (welchen du unter L<http://pause.perl.org>
 erstellen kannst), bist du nur noch ein paar Kommandos davon entfernt es
-zu C<CPAN> zu releasen.
+im C<CPAN> zu veröffentlichen.
 
   $ perl Makefile.PL
   $ make test
@@ -624,12 +626,12 @@ zu C<CPAN> zu releasen.
   $ make dist
   $ mojo cpanify -u USER -p PASS Mojolicious-Plugin-DebugHelper-0.01.tar.gz
 
-=head2 Spezifische C<exception> und C<not_found> Templates
+=head2 Maßgeschneiderte C<exception> und C<not_found> Templates
 
 Während die mitgelieferten C<exception> und C<not_found> Templates sehr
 nützlich bei der Entwicklung sind, möchtest du deinen Nutzern wahrscheinlich
 etwas mehr anwendungsbezogenes zeigen.
-Daher probiert L<Mojolicious> immer zuerst C<exception.$mode.$format.*>
+Daher versucht L<Mojolicious> immer zuerst C<exception.$mode.$format.*>
 oder C<not_found.$mode.$format.*> zu rendern, bevor es die mitgelieferten
 Standardtemplates benutzt,
 
@@ -668,8 +670,8 @@ Ein leerer Teil oder ein C<finish> Aufruf markiert das Ende des Streams.
   0
 
 Besonders in Komnination mit langen Verbindungstimeouts kann dies sehr
-praktisch für Comet (C<long polling>) sein.
-Jedoch funktioniert dies möglicherweise aufgrund der Limitationen einiger
+nützlich für Comet (C<long polling>) sein.
+Jedoch funktioniert dies möglicherweise aufgrund der Einschränkungen einiger
 Webserver nicht in allen Einsatzumgebungen perfekt.
 
 =head2 Enkodierung
@@ -707,21 +709,21 @@ gebunden, also vergesse nicht das L<utf8> Pragma, wenn nötig, zu benutzen.
 
 =head2 Base64 enkodierte DATA-Dateien
 
-Base64 enkodierte statische Dateien wie zum Beispiel Bilder können einfach in
+Base64 enkodierte statische Dateien, wie zum Beispiel Bilder, können einfach in
 dem C<DATA> Bereich deiner Anwendung gespeichert werden. Ähnlich wie bei
 Templates.
 
   @@ favicon.ico (base64)
   ...base64 encoded image...
 
-=head2 Aufblasende DATA Templates
+=head2 Erstellen von Templatedateien aus DATA Templates
 
-Templates, die in Dateien gespeichert sind werden Dateien in dem C<DATA>
+Templates, die in Dateien gespeichert sind werden Templates im C<DATA>
 Bereich vorgezogen. Das erlaubt dir einige Standardtemplates in deiner
 Anwendung festzulegen, die die Benutzer später anpassen können.
 Das C<inflate> Kommando schreibt alle Templates und statischen Dateien
-aus dem C<DATA> Bereich in tatsächliche Dateien in den C<templates> und
-C<public> Verzeichnissen.
+aus dem C<DATA> Bereich in tatsächliche Dateien in die C<templates> und
+C<public> Verzeichnisse.
 
   $ ./myapp.pl inflate
 
@@ -748,7 +750,7 @@ Plugin mit einer angepassten Konfiguration lädst.
   @@ index.html.mustache
   Hello {{= $name }}.
 
-L<Mojo::Template> enthält die komplette Liste der verfügbaren Optionen.
+L<Mojo::Template> enthält eine komplette Liste aller verfügbaren Optionen.
 
 =head2 Füge dein Lieblingstemplate-System hinzu
 
